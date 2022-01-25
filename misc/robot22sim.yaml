@@ -428,7 +428,99 @@ Children:
   Properties: {}
   Base: Subsystems
   Name: Subsystems
-- Children: []
+- Children:
+  - Children:
+    - Children: []
+      Properties:
+        Interruptible: !!robotbuilder.data.properties.BooleanProperty {default: true,
+          name: Interruptible, validators: null, value: true}
+        Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
+          name: Joystick, validators: null, value: Xbox Controller 1}
+        Parameters: !!robotbuilder.data.properties.ParametersProperty
+          default: []
+          name: Parameters
+          validators: null
+          value: []
+        Button: !!robotbuilder.data.properties.ChoicesProperty
+          choices: &id013 [A, B, X, Y, Back, Start, LeftBumper, RightBumper, LeftStick,
+            RightStick]
+          default: A
+          name: Button
+          validators: null
+          value: A
+        Command: !!robotbuilder.data.properties.TypeSelectionProperty
+          default: None
+          name: Command
+          type: Command
+          validators: &id014 [TypeDropdownSelected]
+          value: Autonomous Command
+        Timeout: !!robotbuilder.data.properties.PositiveDoubleProperty {default: 0,
+          name: Timeout, validators: null, value: 0.0}
+        Add Timeout: !!robotbuilder.data.properties.BooleanProperty {default: false,
+          name: Add Timeout, validators: null, value: false}
+        When to Run: !!robotbuilder.data.properties.ChoicesProperty
+          choices: &id015 [whenPressed, whenReleased, whileHeld, whenHeld, toggleWhenPressed,
+            cancelWhenPressed]
+          default: whenPressed
+          name: When to Run
+          validators: null
+          value: whenPressed
+      Base: Xbox Button
+      Name: Xbox Button 1
+    Properties:
+      Number: !!robotbuilder.data.properties.ChoicesProperty
+        choices: &id016 ['0', '1', '2', '3', '4', '5']
+        default: 1
+        name: Number
+        validators: &id017 [Joystick]
+        value: '0'
+    Base: Xbox Controller
+    Name: Xbox Controller 1
+  - Children:
+    - Children: []
+      Properties:
+        Interruptible: !!robotbuilder.data.properties.BooleanProperty {default: true,
+          name: Interruptible, validators: null, value: true}
+        Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
+          name: Joystick, validators: null, value: Xbox Controller 2}
+        Parameters: !!robotbuilder.data.properties.ParametersProperty
+          default: []
+          name: Parameters
+          validators: null
+          value: []
+        Button: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id013
+          default: A
+          name: Button
+          validators: null
+          value: A
+        Command: !!robotbuilder.data.properties.TypeSelectionProperty
+          default: None
+          name: Command
+          type: Command
+          validators: *id014
+          value: Autonomous Command
+        Timeout: !!robotbuilder.data.properties.PositiveDoubleProperty {default: 0,
+          name: Timeout, validators: null, value: 0.0}
+        Add Timeout: !!robotbuilder.data.properties.BooleanProperty {default: false,
+          name: Add Timeout, validators: null, value: false}
+        When to Run: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id015
+          default: whenPressed
+          name: When to Run
+          validators: null
+          value: whenPressed
+      Base: Xbox Button
+      Name: Xbox Button 2
+    Properties:
+      Number: !!robotbuilder.data.properties.ChoicesProperty
+        choices: *id016
+        default: 1
+        name: Number
+        validators: *id017
+        value: '1'
+    Base: Xbox Controller
+    Name: Xbox Controller 2
   Properties: {}
   Base: OI
   Name: Operator Interface
@@ -480,9 +572,9 @@ Properties:
       Irish Student\', extension: null, folder: true, name: Wiring file location,
     validators: null, value: 'C:\Users\Byting Irish Student\'}
   Export Directory: !!robotbuilder.data.properties.FileProperty {default: 'C:\Users\Byting
-      Irish Student\FRCProjects', extension: null, folder: true, name: Export Directory,
-    validators: null, value: 'C:\Users\Byting Irish Student\FRCProjects'}
+      Irish Student\src', extension: null, folder: true, name: Export Directory,
+    validators: null, value: 'C:\Users\Byting Irish Student\src'}
   Autonomous Command: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
     name: Autonomous Command, type: Command, validators: null, value: Autonomous Command}
 Base: Robot
-Name: robot22sim
+Name: Robot

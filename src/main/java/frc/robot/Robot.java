@@ -205,9 +205,9 @@ public class Robot extends TimedRobot
         yeetMode = !yeetMode;
       }
       if (yeetMode) {
-        drive.arcadeDrive(-joystick1.getLeftY() * 1.0f, joystick1.getLeftX() * 1.0f, true);
+        drive.arcadeDrive(joystick1.getLeftX() * 1.0f, -joystick1.getLeftY() * 1.0f, true);
       } else {
-        drive.arcadeDrive(-joystick1.getLeftY() * 0.75f, joystick1.getLeftX() * 0.90f, true);
+        drive.arcadeDrive(joystick1.getLeftX() * 0.75f, -joystick1.getLeftY() * 0.90f, true);
       }
       left1.set(ControlMode.PercentOutput, left2.getMotorOutputPercent());
       right1.set(ControlMode.PercentOutput, right2.getMotorOutputPercent());

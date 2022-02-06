@@ -153,3 +153,6 @@ bin/
 
 # no simgui files
 simgui*.json
+
+# JavaBuilder drops this.
+BSD_License_for_WPILib_code.txt

@@ -201,25 +201,21 @@ public class Robot extends TimedRobot
     SmartDashboard.putBoolean("Yeet", yeetMode);
 
     if (driverInputAccepted) {
+      double speedFactor = .75f;
+      double zRotFactor = .9f;
+      int speedFlip = 1;
       if (joystick1.getYButtonPressed()) {
         yeetMode = !yeetMode;
       }
-      if (yeetMode) {
-        if(joystick1.getXButton()){
-          drive.arcadeDrive(joystick1.getLeftY() * 1.0f, joystick1.getLeftX() * 1.0f, false);
-        }
-        else{
-          drive.arcadeDrive(-joystick1.getLeftY() * 1.0f, joystick1.getLeftX() * 1.0f, false);
-        }
+      if (joystick1.getXButton()) {
+          speedFlip = -1;
       }
-      else {
-        if(joystick1.getXButton()){
-          drive.arcadeDrive(joystick1.getLeftY() * 0.75f, joystick1.getLeftX() * 0.9f, false);
-        }
-        else{
-          drive.arcadeDrive(-joystick1.getLeftY() * 0.75f, joystick1.getLeftX() * 0.90f, false);
-        }
+      if yeetMode {
+        speedFactor = 1.0f;
+        zRotFactor = .75f;
       }
+
+      drive.arcadeDrive(joystick1.getLeftY() * speedFlip * speedFactor, joystick1.getLeftX() * zRotFactor, false);
       left1.set(ControlMode.PercentOutput, left2.getMotorOutputPercent());
       right1.set(ControlMode.PercentOutput, right2.getMotorOutputPercent());
 

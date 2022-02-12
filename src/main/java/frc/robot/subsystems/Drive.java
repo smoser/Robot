@@ -7,15 +7,18 @@ package frc.robot.subsystems;
 import java.util.function.DoubleSupplier;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
 
 public class Drive extends SubsystemBase {
   /** Creates a new Drive subsystem. */
+
 
     private CANSparkMax leftFront = new CANSparkMax(1, MotorType.kBrushless);
     private CANSparkMax leftBack = new CANSparkMax(2, MotorType.kBrushless);
@@ -23,6 +26,8 @@ public class Drive extends SubsystemBase {
     private CANSparkMax rightBack = new CANSparkMax(4, MotorType.kBrushless);
     private MotorControllerGroup leftGroup = new MotorControllerGroup(leftFront, leftBack);
     private MotorControllerGroup rightGroup = new MotorControllerGroup(rightFront, rightBack);
+    private RelativeEncoder leftEncoder = leftFront.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    private RelativeEncoder rightEncoder = rightFront.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
 
     private DifferentialDrive driveDifferential = new DifferentialDrive(leftGroup, rightGroup);
 
@@ -33,6 +38,8 @@ public class Drive extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Left Velocity", leftEncoder.getVelocity());
+    SmartDashboard.putNumber("Right Velocity", rightEncoder.getVelocity());
   }
 
   @Override

@@ -6,9 +6,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.DriveRobot;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -18,12 +21,16 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private static RobotContainer robotContainer = new RobotContainer();
+  private final Drive m_drive = new Drive();
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private XboxController controller1 = new XboxController(0);
+  private XboxController controller2 = new XboxController(1);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
+  private RobotContainer() {
+
+    m_drive.setDefaultCommand(new DriveRobot(m_drive, controller1::getLeftX, controller1::getLeftY));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -41,8 +48,20 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  public static RobotContainer getInstance(){
+    return robotContainer;
+  }
+
+ // public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    //return m_autoCommand;
+  //}
+
+  public XboxController getController1(){
+    return controller1;
+  }
+
+  public XboxController getController2(){
+    return controller2;
   }
 }

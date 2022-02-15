@@ -23,7 +23,7 @@ public class LimelightTest {
     double tH = 8.0f ; // target high hoop is 8 feet high.
     double mountAngle = degToRad(20.0f) ; // say mounted at 20 degrees.
     double offsetAngle = degToRad(25.0f) ; // as read from limelight.
-    // tan(20° + 25°) = 1, so this is just targetHeight - mountHeight
+    // tan(20 + 25) = 1, so this is just targetHeight - mountHeight
     Assert.assertEquals(
       expected, Limelight.distanceToTarget(mH, mountAngle, tH, offsetAngle), DELTA);
   }

@@ -8,8 +8,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveRobot;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.RunIntake;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Intake;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -23,9 +27,12 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private static RobotContainer robotContainer = new RobotContainer();
   private final Drive m_drive = new Drive();
+  private final Intake m_intake = new Intake();
 
   private XboxController controller1 = new XboxController(0);
   private XboxController controller2 = new XboxController(1);
+
+  private JoystickButton button1A = new JoystickButton(controller1, XboxController.Button.kA.value);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   private RobotContainer() {
@@ -41,7 +48,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+
+    button1A.whileHeld(new RunIntake(m_intake));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

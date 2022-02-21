@@ -4,26 +4,18 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
-  
-  public Intake(){
-  }
-
-  final WPI_TalonSRX intake = new WPI_TalonSRX(9);
-
-  public void startIntake(){
-
-    intake.set(0.5);
-  }
-
-  public void stopIntake(){
-    
-    intake.set(0);
-  }
+  private TalonSRX front = new TalonSRX(9);
+  private TalonSRX back = new TalonSRX(5);
+  double frontSpeed = 0.0;
+  double backSpeed = 0.0;
+  /** Creates a new ExampleSubsystem. */
+  public Intake() {}
 
   @Override
   public void periodic() {
@@ -33,5 +25,9 @@ public class Intake extends SubsystemBase {
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
+  }
+  public void setFront(double s){
+    frontSpeed = s;
+    front.set(ControlMode.PercentOutput, frontSpeed);
   }
 }

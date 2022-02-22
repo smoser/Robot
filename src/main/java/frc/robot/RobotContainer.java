@@ -46,10 +46,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton a = new JoystickButton(controller1, 1);
+    JoystickButton A = new JoystickButton(controller1, 1);
 
-   //a.whileHeld(new FrontIntake(m_intake, 0.1));
-   a.whenPressed(new FrontIntake(m_intake, 0.1));
+   A.whileHeld(new FrontIntake(m_intake));
   }
 
   /**

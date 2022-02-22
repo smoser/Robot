@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Intake extends SubsystemBase {
   private TalonSRX front = new TalonSRX(9);
   private TalonSRX back = new TalonSRX(5);
-  double frontSpeed = 0.0;
+  double frontSpeed = 0.2;
   double backSpeed = 0.0;
   /** Creates a new ExampleSubsystem. */
   public Intake() {}
@@ -26,8 +26,11 @@ public class Intake extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
-  public void setFront(double s){
-    frontSpeed = s;
+  public void runFront(){
     front.set(ControlMode.PercentOutput, frontSpeed);
+  }
+
+  public void stopFront(){
+    front.set(ControlMode.PercentOutput, 0.0);
   }
 }

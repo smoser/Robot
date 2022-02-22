@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class FrontIntake extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Intake m_subsystem;
-  private double m_speed = 0.0;
+ 
   private long m_startTime = 0;
 
   /**
@@ -24,12 +24,7 @@ public class FrontIntake extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
-  public FrontIntake(Intake subsystem, double s) {
-    m_subsystem = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
-    m_speed = s;
-  }
+  
 
   // Called when the command is initially scheduled.
   @Override
@@ -40,23 +35,18 @@ public class FrontIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.setFront(m_speed);
+    m_subsystem.runFront();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.setFront(0.0);
+    m_subsystem.stopFront();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((System.currentTimeMillis() - m_startTime) < 3000){
-      return false;
-    } else {
-      return true;
-    }
-  
+    return false;
   }
 }

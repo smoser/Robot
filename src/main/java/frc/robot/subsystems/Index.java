@@ -7,7 +7,9 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 
 public class Index extends SubsystemBase {
   /** Creates a new Index Subsystem. */
@@ -15,22 +17,36 @@ public class Index extends SubsystemBase {
 
   private WPI_TalonSRX index = new WPI_TalonSRX(6);
 
-  private DigitalInput breakBeam1 = new DigitalInput(0);
-  private DigitalInput breakBeam2 = new DigitalInput(1);
-  private DigitalInput breakBeam3 = new DigitalInput(2);
+  private DigitalInput breakBeam0 = new DigitalInput(0);
+  private DigitalInput breakBeam1 = new DigitalInput(1);
+
+  
 
   final static int STATE_START = 0;
   final static int STATE_IDLE = 1;
-  final static int STATE_MAGAZINE = 2;
-  final static int STATE_CHAMBERED = 3;
-  final static int STATE_TWO_BALL = 4;
-  final static int STATE_RUNNING = 5;
+  final static int STATE_RUNNING = 2;
 
   private int state = STATE_START;
+
+  boolean sensor0 = breakBeam0.get();
+  boolean sensor1 = breakBeam1.get();
+
+  
+  public boolean getSensor0(){
+    return sensor0;
+  }
+
+  public boolean getSensor1(){
+    return sensor1;
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    SmartDashboard.putBoolean("sensor1", sensor1);
+    SmartDashboard.putBoolean("sensor0", sensor0);
+    
 
     switch(state){
       case STATE_START:
@@ -38,27 +54,25 @@ public class Index extends SubsystemBase {
       break;
 
       case STATE_IDLE:
-      if(false)
+      if(sensor0 && !sensor1)
+        state = STATE_RUNNING;
+      else if(true)
         state = STATE_IDLE;
       break;
 
-      case STATE_MAGAZINE:
-      state = STATE_IDLE;
-      break;
-
-      case STATE_CHAMBERED:
-      state = STATE_IDLE;
-      break;
-      
-      case STATE_TWO_BALL:
-      state = STATE_IDLE;
-      break;
-
       case STATE_RUNNING:
-      state = STATE_IDLE;
+      if(sensor1)
+        state = STATE_IDLE;
+      else if(true)
+        state = STATE_RUNNING;
       break;
+    }
 
-
+    if(state == STATE_IDLE){
+      index.set(0);
+    }
+    else if(state == STATE_RUNNING){
+      index.set(0.5);
     }
 
     }

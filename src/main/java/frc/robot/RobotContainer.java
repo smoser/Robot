@@ -8,11 +8,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveRobot;
 import frc.robot.commands.FrontIntake;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Launch;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -29,6 +30,7 @@ public class RobotContainer {
   private static RobotContainer robotContainer = new RobotContainer();
   private final Drive m_drive = new Drive();
   private final Intake m_intake = new Intake();
+  private final Launch m_launch = new Launch();
 
   private Limelight limelight;
 
@@ -51,9 +53,10 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     JoystickButton a = new JoystickButton(controller1, 1);
+    JoystickButton b = new JoystickButton(controller1, 2);
 
-   //a.whileHeld(new FrontIntake(m_intake, 0.1));
-   a.whenPressed(new FrontIntake(m_intake, 0.1));
+    a.whileHeld(new FrontIntake(m_intake));
+    b.whileHeld(new Shoot(m_launch));
   }
 
   /**

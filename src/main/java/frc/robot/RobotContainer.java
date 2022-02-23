@@ -12,6 +12,7 @@ import frc.robot.commands.Shoot;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Launch;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,6 +31,8 @@ public class RobotContainer {
   private final Drive m_drive = new Drive();
   private final Intake m_intake = new Intake();
   private final Launch m_launch = new Launch();
+
+  private Limelight limelight;
 
   private XboxController controller1 = new XboxController(0);
   private XboxController controller2 = new XboxController(1);

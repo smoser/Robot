@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -17,65 +18,43 @@ public class Limelight {
     //      offsetAngle (a2) - vertical offset from crosshair to target
     //   https://docs.limelightvision.io/en/latest/cs_estimating_distance.html
     //
+
+    static NetworkTable table;
+
+    public Limelight() {
+        table = NetworkTableInstance.getDefault().getTable("limelight");
+    }
     
+    public static double tx() { //gets x from the limelight
+        return table.getEntry("tx").getDouble(0.0);
+     }
     
-    //the data that will be needed 
-    public static double LimelightDistance() {
+     public static double ty() { //gets y from limelight
+        return table.getEntry("ty").getDouble(0.0);
+     }
 
-        //retrieve data from the limelight
-        NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-        NetworkTableEntry tx = table.getEntry("tx");
-        NetworkTableEntry ty = table.getEntry("ty");
-        NetworkTableEntry ta = table.getEntry("ta");
+     public static double ta() { //gets the area from the limelight
+        return table.getEntry("ta").getDouble(0.0);
+     }
 
-        //turn the data into readable doubles
-        double x = tx.getDouble(0.0);
-        double y = ty.getDouble(0.0);
-        double area = ta.getDouble(0.0);
+    public static double d() { //gets the distance from the limelight
 
-        //periodically push the stats to smartdashboard
-        SmartDashboard.putNumber("LimelightX", x);
-        SmartDashboard.putNumber("LimelightY", y);
-        SmartDashboard.putNumber("LimelightArea", area);
 
-        //h1,a1, and a2 need to be manually entered
+        double h2 = 200f; //target height
+        double h1 = 200f; //camera height
 
-        //This is the height of the target
-        double h2 = 264f;
-    
-        //this is the height of the camera above the floor;
-        double h1 = 100f;
-
-        //This is the angle of the fixed camera
-        double a1 = 90f;
-
-        //the angle to the target you are looking at. Limelight should give you this
-        double a2 = y;
+        double a1 = 90f; //camera angle
+        double a2 = ty(); //target angle
     
         
-        //start the equation to calculate distance d = (h2-h1) / tan(a1+a2).
+        //d = (h2-h1) / tan(a1+a2).
 
-        //h2 - h1
-        //h is the variable for both of the heights after they are subtracted from each other
-        //this makes the equation d = h / tan(a1+a2)
         double h = h2 - h1;
-
-        //a1 + a2
-        //a is the variable for both of the angles
-        //this makes the equation d = h / tan(a)
         double a = a1 + a2;
-
-        //tan(a)
-        //tanA is the tangent of the variable a
-        //this will make the equation d = h / tanA
         double tanA = Math.tan(a);
-
-        //h / tanA
-        //d is the distance to the target
-        //this will make the equation d
         double d = h / tanA;
 
-        return d; //returns the distance
+        return d; //returns distance
         }
     
     

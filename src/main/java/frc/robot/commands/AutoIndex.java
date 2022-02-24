@@ -14,7 +14,6 @@ import frc.robot.subsystems.Index;
 
 
 public class AutoIndex extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Index m_subsystem;
   private DoubleSupplier manualInput;
 

@@ -20,26 +20,21 @@ public class Index extends SubsystemBase {
   public Index() {}
 
   private WPI_TalonSRX index = new WPI_TalonSRX(6);
-  
+
   final static int STATE_START = 0;
   final static int STATE_IDLE = 1;
   final static int STATE_RUNNING = 2;
 
   private int state = STATE_START;
 
-
-
   public void manualIndex(DoubleSupplier m_manualInput){
-
     index.set(m_manualInput.getAsDouble());
-
   }
 
   public void state(){
-    
     RobotContainer m_container = RobotContainer.getInstance();
     Sensors m_sensors = m_container.getSensors();
-    
+
     boolean sensor0 = m_sensors.getSensor0();
     boolean sensor1 = m_sensors.getSensor1();
 
@@ -75,8 +70,7 @@ public class Index extends SubsystemBase {
 
   @Override
   public void periodic() {
-    
-    }
+  }
 
   @Override
   public void simulationPeriodic() {

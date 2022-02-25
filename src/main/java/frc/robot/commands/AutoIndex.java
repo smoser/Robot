@@ -39,9 +39,10 @@ public class AutoIndex extends CommandBase {
 
     if(manualInput.getAsDouble() > 0.1 || manualInput.getAsDouble() < -0.1){
       m_subsystem.manualIndex(manualInput);
+      m_subsystem.state(true);
     }
     else{
-      m_subsystem.state();
+      m_subsystem.state(false);
     }
   }
 

@@ -24,19 +24,20 @@ public class Index extends SubsystemBase {
   final static int STATE_START = 0;
   final static int STATE_IDLE = 1;
   final static int STATE_RUNNING = 2;
+  final static int STATE_MANUAL = 3;
 
   private int state = STATE_START;
 
   public void manualIndex(DoubleSupplier m_manualInput){
-    index.set(m_manualInput.getAsDouble());
+    index.set(m_manualInput.getAsDouble() * 0.5f);
   }
 
-  public void state(){
+  public void state(boolean driverInput){
     RobotContainer m_container = RobotContainer.getInstance();
     Sensors m_sensors = m_container.getSensors();
 
-    boolean sensor0 = m_sensors.getSensor0();
-    boolean sensor1 = m_sensors.getSensor1();
+    boolean sensor0 = m_container.getSensors().getSensor0();
+    boolean sensor1 = m_container.getSensors().getSensor1();
 
     switch(state){
       case STATE_START:
@@ -44,7 +45,9 @@ public class Index extends SubsystemBase {
       break;
 
       case STATE_IDLE:
-      if(!sensor0 && sensor1)
+      if(driverInput)
+        state = STATE_MANUAL;
+      else if(!sensor0 && sensor1)
         state = STATE_RUNNING;
       else if(true)
         state = STATE_IDLE;
@@ -53,9 +56,18 @@ public class Index extends SubsystemBase {
       case STATE_RUNNING:
       if(!sensor1)
         state = STATE_IDLE;
+      else if(driverInput)
+        state = STATE_MANUAL;
       else if(true)
         state = STATE_RUNNING;
       break;
+
+      case STATE_MANUAL:
+      if(!driverInput)
+        state = STATE_IDLE;
+      else if(true)
+        state = STATE_MANUAL;
+      return;
     }
 
     if(state == STATE_IDLE){

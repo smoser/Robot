@@ -8,7 +8,7 @@ import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class FrontIntake extends CommandBase {
+public class RunIntake extends CommandBase {
   private final Intake m_subsystem;
 
   private long m_startTime = 0;
@@ -18,7 +18,7 @@ public class FrontIntake extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public FrontIntake(Intake subsystem) {
+  public RunIntake(Intake subsystem) {
     m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -28,26 +28,27 @@ public class FrontIntake extends CommandBase {
   @Override
   public void initialize() {
     m_startTime = System.currentTimeMillis(); 
+    m_subsystem.stopFront();
+    m_subsystem.stopBack();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.runFront();
+    m_subsystem.startFront();
+    m_subsystem.startBack();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_subsystem.stopFront();
+    m_subsystem.stopBack();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((System.currentTimeMillis() - m_startTime) < 3000){
-      return false;
-    }
-    return true;
+    return false;
   }
 }

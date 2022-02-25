@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.AutoIndex;
@@ -16,6 +17,8 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Launch;
+import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.LimelightSim;
 import frc.robot.subsystems.Sensors;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Index;
@@ -42,14 +45,23 @@ public class RobotContainer {
   private XboxController controller2 = new XboxController(1);
   private XboxController controller3 = new XboxController(2);
 
+  private Limelight m_limelight;
+
   public Sensors getSensors(){
     return m_sensors;
   }
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   private RobotContainer() {
+    if (RobotBase.isReal()) {
+        m_limelight = new Limelight();
+    } else {
+        m_limelight = new LimelightSim();
+    }
 
     m_drive.setDefaultCommand(new DriveRobot(m_drive, controller1::getLeftX, controller1::getLeftY));
+
+
     // Configure the button bindings
     configureButtonBindings();
 

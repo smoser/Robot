@@ -1,17 +1,24 @@
 package frc.robot.subsystems;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
-public class Limelight {
+public class Limelight extends SubsystemBase {
     
     private NetworkTable table;
 
     public Limelight() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
+    }
+
+    @Override
+    public void periodic() {
+      // This method will be called once per scheduler run
+      SmartDashboard.putNumber("Limelight X", tx());
+      SmartDashboard.putNumber("Limelight Y", ty());
     }
     
     public double tx() { //gets x from the limelight

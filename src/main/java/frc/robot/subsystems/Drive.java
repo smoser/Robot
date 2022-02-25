@@ -40,7 +40,6 @@ public class Drive extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Left Velocity", leftEncoder.getVelocity());
     SmartDashboard.putNumber("Right Velocity", rightEncoder.getVelocity());
-    SmartDashboard.putNumber("LimeLight", Limelight.d());
   }
 
   @Override

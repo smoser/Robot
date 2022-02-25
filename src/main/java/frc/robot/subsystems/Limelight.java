@@ -8,6 +8,36 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Limelight {
     
+    private NetworkTable table;
+
+    public Limelight() {
+        table = NetworkTableInstance.getDefault().getTable("limelight");
+    }
+    
+    public double tx() { //gets x from the limelight
+        return table.getEntry("tx").getDouble(0.0);
+     }
+    
+     public double ty() { //gets y from limelight
+        return table.getEntry("ty").getDouble(0.0);
+     }
+
+     public double ta() { //gets the area from the limelight
+        return table.getEntry("ta").getDouble(0.0);
+     }
+
+    public double distance() { //gets the distance from the limelight
+
+        double h2 = 200f; //target height
+        double h1 = 200f; //camera height
+
+        double a1 = 90f; //camera angle
+        double a2 = ty(); //target angle
+        return distanceToTarget(h1, a1, h2, ty());
+    }
+    
+    
+    
     // distanceToTarget:
     //   Return the distance to the hub along the horizontal plane.
     //   Known (measured) values:
@@ -18,50 +48,7 @@ public class Limelight {
     //      offsetAngle (a2) - vertical offset from crosshair to target
     //   https://docs.limelightvision.io/en/latest/cs_estimating_distance.html
     //
-
-    static NetworkTable table;
-
-    public Limelight() {
-        table = NetworkTableInstance.getDefault().getTable("limelight");
-    }
-    
-    public static double tx() { //gets x from the limelight
-        return table.getEntry("tx").getDouble(0.0);
-     }
-    
-     public static double ty() { //gets y from limelight
-        return table.getEntry("ty").getDouble(0.0);
-     }
-
-     public static double ta() { //gets the area from the limelight
-        return table.getEntry("ta").getDouble(0.0);
-     }
-
-    public static double d() { //gets the distance from the limelight
-
-
-        double h2 = 200f; //target height
-        double h1 = 200f; //camera height
-
-        double a1 = 90f; //camera angle
-        double a2 = ty(); //target angle
-    
-        
-        //d = (h2-h1) / tan(a1+a2).
-
-        double h = h2 - h1;
-        double a = a1 + a2;
-        double tanA = Math.tan(a);
-        double d = h / tanA;
-
-        return d; //returns distance
-        }
-    
-    
-    
-    // The test to see if the program is working to get the distance from the limelight
-    public static double distanceToTarget(double h1, double a1,
-        double h2, double a2) {
+    public static double distanceToTarget(double h1, double a1, double h2, double a2) {
     //List the variables that will be needed for the equation
     //this method only will work on cameras that are fixed
     //They are all done in CENTIMETERS

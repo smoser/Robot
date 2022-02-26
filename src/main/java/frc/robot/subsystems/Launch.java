@@ -15,7 +15,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Launch extends SubsystemBase {
   private TalonSRX feed = new TalonSRX(6);
-  private TalonSRX bottom = new TalonSRX(8); // FIXME: don't think 8
+  private TalonSRX bottom = new TalonSRX(10);
+  private TalonSRX top = new TalonSRX(11);
 
   double feedSpeed = 0.2;
 
@@ -38,11 +39,11 @@ public class Launch extends SubsystemBase {
     feed.set(ControlMode.PercentOutput, 0.0);
   }
 
-  public void doDebug(){
+  public void launchSpeed(double target){
     /* Get Talon/Victor's current output percentage */
     double motorOutput = bottom.getMotorOutputPercent();
 
-    double curVelo = bottom.getSelectedSensorVelocity(Constants.kPIDLoopIdx);
+    double curVelo = top.getSelectedSensorVelocity(Constants.kPIDLoopIdx);
 
     /* Velocity Closed Loop */
 
@@ -52,12 +53,22 @@ public class Launch extends SubsystemBase {
      * velocity setpoint is in units/100ms
      */
     double leftYstick = 1.0;
-    double targetVelocity_UnitsPer100ms = leftYstick * 500.0 * 4096 / 600;
+    double targetVelocity_UnitsPer100ms = leftYstick * target * 4096 / 600;
     /* 500 RPM in either direction */
     bottom.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
+    //top.set(ControlMode.Velocity, -targetVelocity_UnitsPer100ms);
 
     SmartDashboard.putNumber("Bottom Velocity [cur]", curVelo);
     SmartDashboard.putNumber("Bottom Velocity [tar]", targetVelocity_UnitsPer100ms);
+  }
+
+  public double getCurVelo(){
+    return bottom.getSelectedSensorVelocity(Constants.kPIDLoopIdx) * 600 / 4096;
+  }
+
+  public void stopLaunch(){
+    top.set(ControlMode.PercentOutput, 0);
+    bottom.set(ControlMode.PercentOutput, 0);
   }
 
 

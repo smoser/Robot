@@ -35,13 +35,17 @@ public class Shoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.runFeed();
+    m_subsystem.launchSpeed(60);
+    if(m_subsystem.getCurVelo() == 60){
+      m_subsystem.runFeed();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_subsystem.stopFeed();
+    m_subsystem.stopLaunch();
   }
 
   // Returns true when the command should end.

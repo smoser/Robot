@@ -50,12 +50,13 @@ public class RobotContainer {
   private RobotContainer() {
 
     m_drive.setDefaultCommand(new DriveRobot(m_drive, controller1::getLeftX, controller1::getLeftY));
+
+      m_launch.doInit();
+
     // Configure the button bindings
     configureButtonBindings();
 
     m_index.setDefaultCommand(new AutoIndex(m_index, controller3::getLeftY));
-
-    m_launch.doInit();
   }
 
   /**

@@ -29,6 +29,10 @@ public class Limelight extends SubsystemBase {
         return table.getEntry("ty").getDouble(0.0);
      }
 
+     public double tv(){
+         return table.getEntry("tv").getDouble(0.0);
+     }
+
      public double ta() { //gets the area from the limelight
         return table.getEntry("ta").getDouble(0.0);
      }

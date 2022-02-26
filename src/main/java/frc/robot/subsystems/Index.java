@@ -32,6 +32,14 @@ public class Index extends SubsystemBase {
     index.set(m_manualInput.getAsDouble() * 0.5f);
   }
 
+  public void runIndex(){
+    index.set(0.5);
+  }
+
+  public void stopIndex(){
+    index.set(0);
+  }
+
   public void state(boolean driverInput){
     RobotContainer m_container = RobotContainer.getInstance();
     Sensors m_sensors = m_container.getSensors();

@@ -35,6 +35,10 @@ public class Drive extends SubsystemBase {
       driveDifferential.arcadeDrive(speed.getAsDouble(), rotation.getAsDouble());
   }
 
+  public void setDrive(double speed, double rotation){
+    driveDifferential.arcadeDrive(speed, rotation);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

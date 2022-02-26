@@ -8,19 +8,20 @@ import frc.robot.Constants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Launch extends SubsystemBase {
-  private TalonSRX feed = new TalonSRX(6);
+  private WPI_VictorSPX feed = new WPI_VictorSPX(7);
   private TalonSRX bottom = new TalonSRX(10);
   private TalonSRX top = new TalonSRX(11);
 
-  double feedSpeed = 0.2;
+  private boolean angleClose = true;
 
-  public Launch() {}
+  double feedSpeed = 0.2;
 
   @Override
   public void periodic() {
@@ -39,7 +40,7 @@ public class Launch extends SubsystemBase {
     feed.set(ControlMode.PercentOutput, 0.0);
   }
 
-  public void launchSpeed(double target){
+  public void setLaunchSpeed(double target){
     /* Get Talon/Victor's current output percentage */
     double motorOutput = bottom.getMotorOutputPercent();
 
@@ -69,6 +70,11 @@ public class Launch extends SubsystemBase {
   public void stopLaunch(){
     top.set(ControlMode.PercentOutput, 0);
     bottom.set(ControlMode.PercentOutput, 0);
+  }
+
+
+  public boolean getAngle(){
+    return angleClose;
   }
 
 

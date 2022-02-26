@@ -10,12 +10,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.AutoIndex;
 import frc.robot.commands.DriveRobot;
 import frc.robot.commands.FrontIntake;
+import frc.robot.commands.LaunchGroup;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.UpdateDashboard;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Launch;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Sensors;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Index;
@@ -37,6 +39,7 @@ public class RobotContainer {
   private final Launch m_launch = new Launch();
   private final Index m_index = new Index();
   private final Sensors m_sensors = new Sensors();
+  private final Limelight m_limelight = new Limelight();
 
   private XboxController controller1 = new XboxController(0);
   private XboxController controller2 = new XboxController(1);
@@ -70,7 +73,7 @@ public class RobotContainer {
     JoystickButton b = new JoystickButton(controller1, 2);
 
     a.whileHeld(new FrontIntake(m_intake));
-    b.whileHeld(new Shoot(m_launch));
+    b.whileHeld(new LaunchGroup(m_launch, m_index, m_drive, m_limelight));
   }
 
   /**

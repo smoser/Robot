@@ -4,15 +4,21 @@
 
 package frc.robot.subsystems;
 
+import frc.robot.Constants;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Launch extends SubsystemBase {
   private TalonSRX feed = new TalonSRX(6);
+  private TalonSRX bottom = new TalonSRX(8); // FIXME: don't think 8
+
   double feedSpeed = 0.2;
-  /** Creates a new ExampleSubsystem. */
+
   public Launch() {}
 
   @Override
@@ -30,5 +36,55 @@ public class Launch extends SubsystemBase {
 
   public void stopFeed(){
     feed.set(ControlMode.PercentOutput, 0.0);
+  }
+
+  public void doDebug(){
+    /* Get Talon/Victor's current output percentage */
+    double motorOutput = bottom.getMotorOutputPercent();
+
+    double curVelo = bottom.getSelectedSensorVelocity(Constants.kPIDLoopIdx);
+
+    /* Velocity Closed Loop */
+
+    /**
+     * Convert 500 RPM to units / 100ms.
+     * 4096 Units/Rev * 500 RPM / 600 100ms/min in either direction:
+     * velocity setpoint is in units/100ms
+     */
+    double leftYstick = 1.0;
+    double targetVelocity_UnitsPer100ms = leftYstick * 500.0 * 4096 / 600;
+    /* 500 RPM in either direction */
+    bottom.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
+
+    SmartDashboard.putNumber("Bottom Velocity [cur]", curVelo);
+    SmartDashboard.putNumber("Bottom Velocity [tar]", targetVelocity_UnitsPer100ms);
+  }
+
+
+  public void doInit() {
+    bottom.configFactoryDefault();
+
+             /* Config sensor used for Primary PID [Velocity] */
+    bottom.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
+                                         Constants.kPIDLoopIdx,
+                                         Constants.kTimeoutMs);
+
+    /**
+     * Phase sensor accordingly.
+      * Positive Sensor Reading should match Green (blinking) Leds on Talon
+     */
+    bottom.setSensorPhase(true);
+
+    /* Config the peak and nominal outputs */
+    bottom.configNominalOutputForward(0, Constants.kTimeoutMs);
+    bottom.configNominalOutputReverse(0, Constants.kTimeoutMs);
+    bottom.configPeakOutputForward(1, Constants.kTimeoutMs);
+    bottom.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+
+    /* Config the Velocity closed loop gains in slot0 */
+    bottom.config_kF(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kF, Constants.kTimeoutMs);
+    bottom.config_kP(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kP, Constants.kTimeoutMs);
+    bottom.config_kI(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kI, Constants.kTimeoutMs);
+    bottom.config_kD(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kD, Constants.kTimeoutMs);
   }
 }

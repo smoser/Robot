@@ -54,6 +54,8 @@ public class RobotContainer {
     configureButtonBindings();
 
     m_index.setDefaultCommand(new AutoIndex(m_index, controller3::getLeftY));
+
+    m_launch.doInit();
   }
 
   /**

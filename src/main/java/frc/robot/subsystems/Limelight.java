@@ -1,4 +1,7 @@
 package frc.robot.subsystems;
+
+import frc.robot.Constants;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -19,6 +22,9 @@ public class Limelight extends SubsystemBase {
       // This method will be called once per scheduler run
       SmartDashboard.putNumber("Limelight X", tx());
       SmartDashboard.putNumber("Limelight Y", ty());
+      SmartDashboard.putNumber("Limelight TA", ta());
+      SmartDashboard.putNumber("Limelight Target", tv());
+      SmartDashboard.putNumber("Limelight Distance", distance());
     }
     
     public double tx() { //gets x from the limelight
@@ -38,16 +44,15 @@ public class Limelight extends SubsystemBase {
      }
 
     public double distance() { //gets the distance from the limelight
-
-        double h2 = 200f; //target height
-        double h1 = 200f; //camera height
-
-        double a1 = 90f; //camera angle
-        double a2 = ty(); //target angle
-        return distanceToTarget(h1, a1, h2, ty());
+        return distanceToTarget(
+                Constants.limelightMountHeight, Constants.limelightMountAngle,
+                Constants.targetHeight, ty());
     }
     
     
+    public static double degreesToRadians(double degrees) {
+        return degrees * Math.PI / 180;
+    }
     
     // distanceToTarget:
     //   Return the distance to the hub along the horizontal plane.
@@ -59,11 +64,10 @@ public class Limelight extends SubsystemBase {
     //      offsetAngle (a2) - vertical offset from crosshair to target
     //   https://docs.limelightvision.io/en/latest/cs_estimating_distance.html
     //
+    // Angles are in Degrees.
     public static double distanceToTarget(double h1, double a1, double h2, double a2) {
     //List the variables that will be needed for the equation
     //this method only will work on cameras that are fixed
-    //They are all done in CENTIMETERS
-
     
     //This is the height of the target
     //h2 = 100;
@@ -94,7 +98,7 @@ public class Limelight extends SubsystemBase {
     //tan(a)
     //tanA is the tangent of the variable a
     //this will make the equation d = h / tanA
-    double tanA = Math.tan(a);
+    double tanA = Math.tan(degreesToRadians(a));
 
     //h / tanA
     //d is the distance to the target

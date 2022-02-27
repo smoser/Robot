@@ -40,4 +40,14 @@ public final class Constants {
      *
 	 * 	                                    			  kP   kI   kD   kF          Iz    PeakOut */
     public final static Gains kGains_Velocit = new Gains( 0.25, 0.001, 20, 1023.0/7200.0,  300,  1.00);
+
+    // Height of the high target in feet.
+    public final static double targetHeight = 8.0f;
+
+    // Height of the center of limelight camera from the ground.
+    public final static double limelightMountHeight = 3.0f;
+
+    // Mount angle in degrees of the limelight from horizontal.
+    public final static double limelightMountAngle = 20.0f;
+
 }

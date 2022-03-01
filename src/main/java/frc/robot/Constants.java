@@ -50,4 +50,7 @@ public final class Constants {
     // Mount angle in degrees of the limelight from horizontal.
     public final static double limelightMountAngle = 20.0f;
 
+    // Wheel size for drive in Feet (6 inches).
+    public final static double wheelDiameterFeet = .5f;
+
 }

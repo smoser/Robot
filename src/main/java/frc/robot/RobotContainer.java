@@ -67,6 +67,8 @@ public class RobotContainer {
 
     m_launch.doInit();
 
+    m_drive.doInit();
+
     // Configure the button bindings
     configureButtonBindings();
 

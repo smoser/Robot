@@ -13,10 +13,12 @@ import frc.robot.commands.DriveRobot;
 import frc.robot.commands.FrontIntake;
 import frc.robot.commands.LaunchGroup;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.SwitchIntakeSolenoid;
 import frc.robot.commands.UpdateDashboard;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeSolenoid;
 import frc.robot.subsystems.Launch;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightSim;
@@ -41,6 +43,7 @@ public class RobotContainer {
   private final Launch m_launch = new Launch();
   private final Index m_index = new Index();
   private final Sensors m_sensors = new Sensors();
+  private final IntakeSolenoid m_intakeSolenoid = new IntakeSolenoid();
 
   private XboxController controller1 = new XboxController(0);
   private XboxController controller2 = new XboxController(1);
@@ -78,10 +81,13 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     JoystickButton a = new JoystickButton(controller1, 1);
-    JoystickButton b = new JoystickButton(controller1, 2);
+    JoystickButton a2 = new JoystickButton(controller2, 1);
+    JoystickButton x3 = new JoystickButton(controller3, XboxController.Button.kX.value);
 
     a.whileHeld(new FrontIntake(m_intake));
-    b.whileHeld(new LaunchGroup(m_launch, m_index, m_drive, m_limelight));
+    a2.whileHeld(new LaunchGroup(m_launch, m_index, m_drive, m_limelight));
+    x3.whenPressed(new SwitchIntakeSolenoid(m_intakeSolenoid));
+
   }
 
   /**

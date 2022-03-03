@@ -5,14 +5,16 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Launch;
+
+import edu.wpi.first.wpilibj.Timer;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 
 public class SwitchAngle extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Launch m_subsystem;
-  private boolean isUsed;
-  private int timer;
+  private final Timer m_timer = new Timer();
 
   /**
    *
@@ -28,23 +30,21 @@ public class SwitchAngle extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    isUsed = false;
-    timer = 0;
+
+    m_timer.reset();
+    m_timer.start();
+
+    if(m_subsystem.getAngle()){
+      m_subsystem.setFar();
+    }
+    else if(!m_subsystem.getAngle()){
+      m_subsystem.setClose();
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_subsystem.getAngle() && !isUsed){
-      m_subsystem.setFar();
-      isUsed = true;
-    }
-    else if(!m_subsystem.getAngle() && !isUsed){
-      m_subsystem.setClose();
-      isUsed = true;
-    }
-
-    timer++;
   }
 
   // Called once the command ends or is interrupted.
@@ -56,7 +56,7 @@ public class SwitchAngle extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(timer > 50){
+    if(m_timer.get() > 1.5){
       return true;
     }
     else{

@@ -4,14 +4,12 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSolenoid;
 
 import javax.management.timer.Timer;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-/** An example command that uses an example subsystem. */
 public class SwitchIntakeSolenoid extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final IntakeSolenoid m_subsystem;
@@ -20,7 +18,7 @@ public class SwitchIntakeSolenoid extends CommandBase {
   
 
   /**
-   * Creates a new ExampleCommand.
+   * Creates a new SwitchIntakeSolenoid Command.
    *
    * @param subsystem The subsystem used by this command.
    */

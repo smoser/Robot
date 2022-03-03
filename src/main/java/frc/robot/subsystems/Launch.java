@@ -12,12 +12,17 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Launch extends SubsystemBase {
   private WPI_VictorSPX feed = new WPI_VictorSPX(7);
   private TalonSRX bottom = new TalonSRX(10);
   private TalonSRX top = new TalonSRX(11);
+
+  private DoubleSolenoid launchSolenoid = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, Constants.launchSolenoidForewardID, Constants.launchSolenoidReverseID);
 
   private boolean angleClose = true;
 
@@ -75,6 +80,20 @@ public class Launch extends SubsystemBase {
 
   public boolean getAngle(){
     return angleClose;
+  }
+
+  public void setClose(){
+    launchSolenoid.set(Value.kReverse);
+    angleClose = true;
+  }
+
+  public void setFar(){
+    launchSolenoid.set(Value.kForward);
+    angleClose = false;
+  }
+
+  public void setOff(){
+    launchSolenoid.set(Value.kOff);
   }
 
 

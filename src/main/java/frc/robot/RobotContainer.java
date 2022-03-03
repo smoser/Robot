@@ -13,6 +13,7 @@ import frc.robot.commands.DriveRobot;
 import frc.robot.commands.FrontIntake;
 import frc.robot.commands.LaunchGroup;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.SwitchAngle;
 import frc.robot.commands.SwitchIntakeSolenoid;
 import frc.robot.commands.UpdateDashboard;
 import frc.robot.commands.ExampleCommand;
@@ -85,10 +86,12 @@ public class RobotContainer {
     JoystickButton a = new JoystickButton(controller1, 1);
     JoystickButton a2 = new JoystickButton(controller2, 1);
     JoystickButton x3 = new JoystickButton(controller3, XboxController.Button.kX.value);
+    JoystickButton b3 = new JoystickButton(controller3, XboxController.Button.kB.value);
 
     a.whileHeld(new FrontIntake(m_intake));
     a2.whileHeld(new LaunchGroup(m_launch, m_index, m_drive, m_limelight));
     x3.whenPressed(new SwitchIntakeSolenoid(m_intakeSolenoid));
+    b3.whenPressed(new SwitchAngle(m_launch));
 
   }
 

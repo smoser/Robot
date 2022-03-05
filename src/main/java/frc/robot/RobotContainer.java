@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.AutoIndex;
+import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.DriveRobot;
 import frc.robot.commands.FrontIntake;
 import frc.robot.commands.LaunchGroup;
@@ -45,7 +46,8 @@ public class RobotContainer {
   private final Index m_index = new Index();
   private final Sensors m_sensors = new Sensors();
   private final IntakeSolenoid m_intakeSolenoid = new IntakeSolenoid();
-
+  private final AutonomousCommand m_autoCommand;
+  
   private XboxController controller1 = new XboxController(0);
   private XboxController controller2 = new XboxController(1);
   private XboxController controller3 = new XboxController(2);
@@ -66,6 +68,8 @@ public class RobotContainer {
 
     m_drive.setDefaultCommand(new DriveRobot(m_drive, controller1::getLeftX, controller1::getLeftY));
 
+    m_autoCommand = new AutonomousCommand(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
+  
     m_launch.doInit();
 
     m_drive.doInit();
@@ -95,19 +99,19 @@ public class RobotContainer {
 
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
+ 
   public static RobotContainer getInstance(){
     return robotContainer;
   }
 
- // public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    //return m_autoCommand;
-  //}
+ /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+  public Command getAutonomousCommand() {
+    return m_autoCommand;
+  }
 
   public XboxController getController1(){
     return controller1;

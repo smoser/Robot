@@ -42,6 +42,10 @@ public class Drive extends SubsystemBase {
       driveDifferential.arcadeDrive(speed.getAsDouble(), rotation.getAsDouble());
   }
 
+  public void tankDrive(DoubleSupplier leftSpeed, DoubleSupplier rightSpeed){
+    driveDifferential.tankDrive(leftSpeed.getAsDouble(), rightSpeed.getAsDouble());
+  }
+
   public void setDrive(double speed, double rotation){
     driveDifferential.arcadeDrive(speed, rotation);
   }

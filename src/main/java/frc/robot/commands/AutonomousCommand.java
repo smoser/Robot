@@ -15,7 +15,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
         addCommands(
             //new SwitchIntakeSolenoid(intakeSolenoid),
             new DriveDistance(drive, (double) 4.0f),
-            new FrontIntake(intake),
+            new RunIntake(intake),
             new DriveDistance(drive, (double) 2.0f),
             new Align(drive, limelight),
             new Shoot(launch, index, limelight)

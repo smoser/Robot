@@ -10,12 +10,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.AutoIndex;
 import frc.robot.commands.AutonomousCommand;
-import frc.robot.commands.DriveRobot;
+import frc.robot.commands.TankDriveRobot;
 import frc.robot.commands.FrontIntake;
 import frc.robot.commands.LaunchGroup;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SwitchAngle;
 import frc.robot.commands.SwitchIntakeSolenoid;
+import frc.robot.commands.TankDriveRobot;
 import frc.robot.commands.UpdateDashboard;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Drive;
@@ -66,7 +67,7 @@ public class RobotContainer {
         m_limelight = new LimelightSim();
     }
 
-    m_drive.setDefaultCommand(new DriveRobot(m_drive, controller1::getLeftX, controller1::getLeftY));
+    m_drive.setDefaultCommand(new TankDriveRobot(m_drive, controller1::getLeftY, controller2::getLeftY));
 
     m_autoCommand = new AutonomousCommand(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
   

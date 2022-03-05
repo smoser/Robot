@@ -11,7 +11,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class DriveRobot extends CommandBase {
+public class ArcadeDriveRobot extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Drive m_subsystem;
   private DoubleSupplier m_speed;
@@ -22,7 +22,7 @@ public class DriveRobot extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveRobot(Drive subsystem, DoubleSupplier speed, DoubleSupplier rotation) {
+  public ArcadeDriveRobot(Drive subsystem, DoubleSupplier speed, DoubleSupplier rotation) {
     m_subsystem = subsystem;
     m_speed = speed;
     m_rotation = rotation;

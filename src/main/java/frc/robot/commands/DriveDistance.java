@@ -29,8 +29,12 @@ public class DriveDistance extends CommandBase {
   public void initialize() {
       // This could use RelativeEncoder.setPositionConversionFactor to then use
       // a different unit.
+      double l = m_drive.getLeftRotations();
+      double r = m_drive.getRightRotations();
+
       lTarget = m_drive.getLeftRotations() + (m_distance / distancePerRotation);
       rTarget = m_drive.getRightRotations() + (m_distance / distancePerRotation);
+      
       m_drive.setLeftRotations(lTarget);
       m_drive.setRightRotations(rTarget);
   }

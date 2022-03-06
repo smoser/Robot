@@ -23,8 +23,8 @@ public class Drive extends SubsystemBase {
 
     private CANSparkMax leftFront = new CANSparkMax(1, MotorType.kBrushless);
     private CANSparkMax leftBack = new CANSparkMax(2, MotorType.kBrushless);
-    private CANSparkMax rightFront = new CANSparkMax(3, MotorType.kBrushless);
-    private CANSparkMax rightBack = new CANSparkMax(4, MotorType.kBrushless);
+    private CANSparkMax rightFront = new CANSparkMax(4, MotorType.kBrushless);
+    private CANSparkMax rightBack = new CANSparkMax(3, MotorType.kBrushless);
     private SparkMaxPIDController leftFrontPidController;
     private SparkMaxPIDController leftBackPidController;
     private SparkMaxPIDController rightFrontPidController;

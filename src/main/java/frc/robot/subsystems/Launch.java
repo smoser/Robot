@@ -8,7 +8,6 @@ import frc.robot.Constants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,7 +17,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Launch extends SubsystemBase {
-  private WPI_VictorSPX feed = new WPI_VictorSPX(7);
+  private TalonSRX feed = new TalonSRX(7);
   private TalonSRX bottom = new TalonSRX(10);
   private TalonSRX top = new TalonSRX(11);
 
@@ -97,11 +96,11 @@ public class Launch extends SubsystemBase {
   }
 
 
-  public void doInit() {
-    bottom.configFactoryDefault();
+  public void setupTalonEncoder(TalonSRX talon) {
+    talon.configFactoryDefault();
 
              /* Config sensor used for Primary PID [Velocity] */
-    bottom.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
+    talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
                                          Constants.kPIDLoopIdx,
                                          Constants.kTimeoutMs);
 
@@ -109,18 +108,23 @@ public class Launch extends SubsystemBase {
      * Phase sensor accordingly.
       * Positive Sensor Reading should match Green (blinking) Leds on Talon
      */
-    bottom.setSensorPhase(true);
+    talon.setSensorPhase(true);
 
     /* Config the peak and nominal outputs */
-    bottom.configNominalOutputForward(0, Constants.kTimeoutMs);
-    bottom.configNominalOutputReverse(0, Constants.kTimeoutMs);
-    bottom.configPeakOutputForward(1, Constants.kTimeoutMs);
-    bottom.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+    talon.configNominalOutputForward(0, Constants.kTimeoutMs);
+    talon.configNominalOutputReverse(0, Constants.kTimeoutMs);
+    talon.configPeakOutputForward(1, Constants.kTimeoutMs);
+    talon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
     /* Config the Velocity closed loop gains in slot0 */
-    bottom.config_kF(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kF, Constants.kTimeoutMs);
-    bottom.config_kP(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kP, Constants.kTimeoutMs);
-    bottom.config_kI(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kI, Constants.kTimeoutMs);
-    bottom.config_kD(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kD, Constants.kTimeoutMs);
+    talon.config_kF(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kF, Constants.kTimeoutMs);
+    talon.config_kP(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kP, Constants.kTimeoutMs);
+    talon.config_kI(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kI, Constants.kTimeoutMs);
+    talon.config_kD(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kD, Constants.kTimeoutMs);
+  }
+
+  public void doInit() {
+      setupTalonEncoder(bottom);
+      setupTalonEncoder(top);
   }
 }

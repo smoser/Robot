@@ -66,6 +66,15 @@ public class RobotContainer {
         m_limelight = new LimelightSim();
     }
 
+    // setting Name allows subsystems to be displayed in shuffleboard when robot is in Test mode.
+    m_drive.setName("Drive");
+    m_intake.setName("Intake");
+    m_launch.setName("Launch");
+    m_index.setName("Index");
+    m_sensors.setName("Sensors");
+    m_intakeSolenoid.setName("IntakeSolenoid");
+    m_limelight.setName("Limelight");
+
     m_drive.setDefaultCommand(new TankDriveRobot(m_drive, controller1::getLeftY, controller2::getLeftY));
 
     m_autoCommand = new AutonomousCommand(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);

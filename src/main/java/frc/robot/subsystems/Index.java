@@ -29,11 +29,11 @@ public class Index extends SubsystemBase {
   private int state = STATE_START;
 
   public void manualIndex(DoubleSupplier m_manualInput){
-    index.set(m_manualInput.getAsDouble() * 0.5f);
+    index.set(m_manualInput.getAsDouble() * -0.8f);
   }
 
   public void runIndex(){
-    index.set(0.5);
+    index.set(-0.8);
   }
 
   public void stopIndex(){

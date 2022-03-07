@@ -11,14 +11,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
 public class Shoot extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Launch m_launch;
   private final Index m_index;
   private final Limelight m_limelight;
   private double launchSpeed;
   private boolean feedRunning = false;
-
-  private long m_startTime = 0;
 
   /**
    * Creates a new shot command.
@@ -29,7 +26,7 @@ public class Shoot extends CommandBase {
     m_launch = launch;
     m_index = index;
     m_limelight = limelight;
-    
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(launch, index);
   }
@@ -38,30 +35,27 @@ public class Shoot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_startTime = System.currentTimeMillis();
-    
     if(m_launch.getAngle()){
-      launchSpeed = 100;
-      m_launch.setLaunchSpeed(launchSpeed);
-      
+      launchSpeed = 2500;
+    } else{
+      launchSpeed = m_limelight.distance() * 82.738 + 143.2;
     }
-    else{
-    launchSpeed = m_limelight.distance() * 82.738 + 143.2;
-    m_launch.setLaunchSpeed(launchSpeed);
-      if(m_launch.getCurVelo() >= launchSpeed){
-        m_launch.runFeed();
-        m_index.runIndex();
-      }
-    }
+    m_launch.setLaunchRpm(launchSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_launch.getCurVelo() >= 100 && !feedRunning){
-      m_launch.runFeed();
-      m_index.runIndex();
-      feedRunning = true;
+    if(m_launch.getCurRpm() >= (launchSpeed * .95)) {
+      if (!feedRunning) {
+        m_launch.runFeed();
+        m_index.runIndex();
+        feedRunning = true;
+      }
+    } else {
+        m_launch.stopFeed();
+        m_index.stopIndex();
+        feedRunning = false;
     }
   }
 

@@ -25,6 +25,7 @@ public class Launch extends SubsystemBase {
 
   private boolean angleClose = true;
   private int counter = 0;
+  private double targetRpm = 0;
 
   double feedSpeed = 0.2;
 
@@ -34,10 +35,8 @@ public class Launch extends SubsystemBase {
     counter++;
     if (counter == 25) {
         counter = 0;
-        double motorOutput = bottom.getMotorOutputPercent();
-        double curVelo = bottom.getSelectedSensorVelocity(Constants.kPIDLoopIdx);
-        SmartDashboard.putNumber("Bottom Velocity [cur]", curVelo);
-        SmartDashboard.putNumber("Bottom Output   [cur]", motorOutput);
+        SmartDashboard.putNumber("Bottom Velocity [cur]", getCurRpm());
+        SmartDashboard.putNumber("Bottom Output   [cur]", bottom.getMotorOutputPercent());
     }
   }
 
@@ -53,29 +52,37 @@ public class Launch extends SubsystemBase {
     feed.set(ControlMode.PercentOutput, 0.0);
   }
 
-  public void setLaunchSpeed(double target){
+  public void setLaunchRpm(double target){
     /* Get Talon/Victor's current output percentage */
     double motorOutput = bottom.getMotorOutputPercent();
-    double curVelo = bottom.getSelectedSensorVelocity(Constants.kPIDLoopIdx);
 
-    /* Velocity Closed Loop */
+    targetRpm = target;
 
-    /**
-     * Convert target RPM to units / 100ms.
-     * 4096 Units/Rev * 500 RPM / 600 100ms/min in either direction:
-     * velocity setpoint is in units/100ms
-     */
-    double targetVelocity_UnitsPer100ms = target * 4096 / 600;
-    bottom.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
-    top.set(ControlMode.Velocity, -targetVelocity_UnitsPer100ms);
+    bottom.set(ControlMode.Velocity, rpmToVelo(targetRpm));
+    top.set(ControlMode.Velocity, rpmToVelo(targetRpm));
 
-    SmartDashboard.putNumber("Bottom Velocity [tar]", targetVelocity_UnitsPer100ms);
-    SmartDashboard.putNumber("Bottom Velocity [cur]", curVelo);
+    SmartDashboard.putNumber("Bottom Velocity [tar]", targetRpm);
+    SmartDashboard.putNumber("Bottom Velocity [cur]", getCurRpm());
     SmartDashboard.putNumber("Bottom Output   [cur]", motorOutput);
   }
 
-  public double getCurVelo(){
-    return bottom.getSelectedSensorVelocity(Constants.kPIDLoopIdx) * 600 / 4096;
+  // convert native velocity (units of 4096 per rotation per 100ms) to RPM
+  public static double veloToRpm(double velocity) {
+      return (velocity / 4096 ) * 600;
+  }
+
+  /**
+   * Convert RPM to units / 100ms.
+   * 4096 Units/Rev * RPM / 600 100ms/min in either direction:
+   * velocity setpoint is in units/100ms
+   */
+  public static double rpmToVelo(double rpm) {
+      return (rpm * 4096) / 600;
+  }
+
+  // get the current RPM
+  public double getCurRpm(){
+    return veloToRpm(bottom.getSelectedSensorVelocity(Constants.kPIDLoopIdx));
   }
 
   public void stopLaunch(){
@@ -132,6 +139,7 @@ public class Launch extends SubsystemBase {
 
   public void doInit() {
       setupTalonEncoder(bottom);
+      top.setInverted(true);
       setupTalonEncoder(top);
   }
 }

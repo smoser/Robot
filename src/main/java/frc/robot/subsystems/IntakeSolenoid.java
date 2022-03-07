@@ -13,7 +13,7 @@ public class IntakeSolenoid extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public IntakeSolenoid() {}
 
-  private DoubleSolenoid solenoid0 = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, 0, 1);
+  private DoubleSolenoid solenoid0 = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, 2, 3);
   private boolean extended = false;
 
   public void runForeward(){

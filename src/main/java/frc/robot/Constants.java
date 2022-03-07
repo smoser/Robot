@@ -45,7 +45,7 @@ public final class Constants {
     public final static double targetHeight = 8.0f;
 
     // Height of the center of limelight camera from the ground.
-    public final static double limelightMountHeight = 3.0f;
+    public final static double limelightMountHeight = 30.25f / 12;
 
     // Mount angle in degrees of the limelight from horizontal.
     public final static double limelightMountAngle = 20.0f;

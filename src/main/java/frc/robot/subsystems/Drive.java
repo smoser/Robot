@@ -81,6 +81,7 @@ public class Drive extends SubsystemBase {
   public void doInit() {
 
     leftGroup.setInverted(true);
+    rightGroup.setInverted(true);
 
     // PID coefficients
     double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;

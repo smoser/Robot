@@ -24,12 +24,21 @@ public class Launch extends SubsystemBase {
   private DoubleSolenoid launchSolenoid = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, Constants.launchSolenoidForewardID, Constants.launchSolenoidReverseID);
 
   private boolean angleClose = true;
+  private int counter = 0;
 
   double feedSpeed = 0.2;
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    counter++;
+    if (counter == 25) {
+        counter = 0;
+        double motorOutput = bottom.getMotorOutputPercent();
+        double curVelo = bottom.getSelectedSensorVelocity(Constants.kPIDLoopIdx);
+        SmartDashboard.putNumber("Bottom Velocity [cur]", curVelo);
+        SmartDashboard.putNumber("Bottom Output   [cur]", motorOutput);
+    }
   }
 
   @Override
@@ -47,24 +56,22 @@ public class Launch extends SubsystemBase {
   public void setLaunchSpeed(double target){
     /* Get Talon/Victor's current output percentage */
     double motorOutput = bottom.getMotorOutputPercent();
-
-    double curVelo = top.getSelectedSensorVelocity(Constants.kPIDLoopIdx);
+    double curVelo = bottom.getSelectedSensorVelocity(Constants.kPIDLoopIdx);
 
     /* Velocity Closed Loop */
 
     /**
-     * Convert 500 RPM to units / 100ms.
+     * Convert target RPM to units / 100ms.
      * 4096 Units/Rev * 500 RPM / 600 100ms/min in either direction:
      * velocity setpoint is in units/100ms
      */
-    double leftYstick = 1.0;
-    double targetVelocity_UnitsPer100ms = leftYstick * target * 4096 / 600;
-    /* 500 RPM in either direction */
+    double targetVelocity_UnitsPer100ms = target * 4096 / 600;
     bottom.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
-    //top.set(ControlMode.Velocity, -targetVelocity_UnitsPer100ms);
+    top.set(ControlMode.Velocity, -targetVelocity_UnitsPer100ms);
 
-    SmartDashboard.putNumber("Bottom Velocity [cur]", curVelo);
     SmartDashboard.putNumber("Bottom Velocity [tar]", targetVelocity_UnitsPer100ms);
+    SmartDashboard.putNumber("Bottom Velocity [cur]", curVelo);
+    SmartDashboard.putNumber("Bottom Output   [cur]", motorOutput);
   }
 
   public double getCurVelo(){

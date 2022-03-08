@@ -7,6 +7,8 @@ package frc.robot.commands;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Launch;
 import frc.robot.subsystems.Limelight;
+
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -16,6 +18,8 @@ public class Shoot extends CommandBase {
   private final Limelight m_limelight;
   private double launchSpeed;
   private boolean feedRunning = false;
+
+  private final Timer m_timer = new Timer();
 
   /**
    * Creates a new shot command.
@@ -31,31 +35,35 @@ public class Shoot extends CommandBase {
     addRequirements(launch, index);
   }
 
-
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_timer.reset();
     if(m_launch.getAngle()){
       launchSpeed = 2500;
-    } else{
+    } else {
       launchSpeed = m_limelight.distance() * 82.738 + 143.2;
     }
     m_launch.setLaunchRpm(launchSpeed);
   }
 
+  public boolean launcherReady() {
+    double curRpm = m_launch.getCurRpm();
+    return ((curRpm >= launchSpeed * 0.95) && curRpm <= launchSpeed * 1.05);
+  }
+
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_launch.getCurRpm() >= (launchSpeed * .95)) {
+    if (launcherReady()) {
       if (!feedRunning) {
+        m_timer.reset();
+        m_timer.start();
         m_launch.runFeed();
         m_index.runIndex();
         feedRunning = true;
       }
-    } else {
-        m_launch.stopFeed();
-        m_index.stopIndex();
-        feedRunning = false;
     }
   }
 
@@ -65,12 +73,17 @@ public class Shoot extends CommandBase {
     m_launch.stopFeed();
     m_launch.stopLaunch();
     m_index.stopIndex();
+    m_timer.stop();
     feedRunning = false;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // feed has been running for 3 seconds.
+    if(m_timer.get() > 3) {
+      return true;
+    }
     return false;
   }
 }

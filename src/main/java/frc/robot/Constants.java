@@ -47,6 +47,12 @@ public final class Constants {
 	// Height from which the ball launches
 	public final static double launchHeight = 44.0f / 12;
 
+    // launch wheels are 3 and 7/8 inches.
+    public final static double launchWheelDiameterFeet = 3.875f / 12;
+
+    // launch angle of "long range"  shot.
+    public final static double launchAngleFarDegrees = 55.0f;
+
     // Height of the center of limelight camera from the ground.
     public final static double limelightMountHeight = 30.25f / 12;
 

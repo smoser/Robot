@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
+import frc.robot.commands.CalcEngine;
 
 
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -22,7 +23,7 @@ public class Limelight extends SubsystemBase {
 
     private ShuffleboardTab llsTab = Shuffleboard.getTab(LimelightTabName);
 
-    protected NetworkTableEntry eX, eY, eArea, eTarget, eDist;
+    protected NetworkTableEntry eX, eY, eArea, eTarget, eDist, eVelo, eRpm;
     protected NetworkTable llNetTable, shuffNetTable;
     protected SendableChooser<Integer> pipelineChooser;
     protected SendableChooser<Integer> ledModeChooser;
@@ -33,17 +34,21 @@ public class Limelight extends SubsystemBase {
     public final String[] camModes = {"Vision", "Camera"};
 
     protected int lastCamMode, lastLedMode, lastPipeline;
+    private CalcEngine calc;
+    private double launchAngle = Constants.launchAngleFarDegrees;
 
     public Limelight() {
       llNetTable = NetworkTableInstance.getDefault().getTable(LimelightStr);
       shuffNetTable = NetworkTableInstance.getDefault().getTable("Shuffleboard").getSubTable(LimelightTabName);
+      calc = new CalcEngine(Constants.launchHeight, Constants.targetHeight, Constants.wheelDiameterFeet);
 
-      NetworkTableInstance n = NetworkTableInstance.getDefault();
       eX = llsTab.add("TX", 0).getEntry();
       eY = llsTab.add("TY", 0).getEntry();
       eArea  = llsTab.add("Area", 0).getEntry();
       eTarget = llsTab.add("Target", false).getEntry();
       eDist = llsTab.add("Distance", 0.0).getEntry();
+      eVelo = llsTab.add("ProjVel", 0.0).getEntry();
+      eRpm = llsTab.add("ProjRPM", 0.0).getEntry();
 
       // pipeline chooser
       pipelineChooser = new SendableChooser<Integer>();
@@ -158,6 +163,8 @@ public class Limelight extends SubsystemBase {
       eArea.setDouble(ta());
       eTarget.setBoolean(tv());
       eDist.setDouble(distance());
+      eVelo.setDouble(projVelo());
+      eRpm.setDouble(projRpm());
     }
 
     public double tx() { //gets x from the limelight
@@ -182,11 +189,23 @@ public class Limelight extends SubsystemBase {
                 Constants.targetHeight, ty());
     }
     
-    
     public static double degreesToRadians(double degrees) {
         return degrees * Math.PI / 180;
     }
-    
+
+    // return projectile velocity in feet/sec
+    public double projVelo() {
+      return calc.projVelo(distance(), launchAngle);
+    }
+
+    public double projRpm() {
+      return calc.projRpm(distance(), launchAngle);
+    }
+
+    public double tableRpm() {
+      return calc.tableRpm(distance());
+    }
+
     // distanceToTarget:
     //   Return the distance to the hub along the horizontal plane.
     //   Known (measured) values:

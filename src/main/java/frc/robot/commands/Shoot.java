@@ -53,7 +53,7 @@ public class Shoot extends CommandBase {
       return noLimelightRpm;
     }
 
-    return m_limelight.distance() * 82.738 + 143.2;
+    return m_limelight.tableRpm();
   }
 
 

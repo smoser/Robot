@@ -18,6 +18,8 @@ public class LimelightSim extends Limelight {
       // This method will be called once per scheduler run
       applyShuffleboardChanges();
       eDist.setDouble(distance());
+      eVelo.setDouble(projVelo());
+      eRpm.setDouble(projRpm());
     }
 
     public boolean tv() { //get tv the shuffleboard button.

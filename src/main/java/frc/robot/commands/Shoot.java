@@ -10,6 +10,7 @@ import frc.robot.subsystems.Limelight;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /** An example command that uses an example subsystem. */
 public class Shoot extends CommandBase {
@@ -53,7 +54,7 @@ public class Shoot extends CommandBase {
       return noLimelightRpm;
     }
 
-    return m_limelight.distance() * 82.738 + 143.2;
+    return m_limelight.tableRpm();
   }
 
 

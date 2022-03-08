@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
+import frc.robot.commands.CalcEngine;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
@@ -12,19 +13,33 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Limelight extends SubsystemBase {
     
     private NetworkTable table;
+    private CalcEngine calc;
+    int pCount = 0;
 
     public Limelight() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
+        calc = new CalcEngine(Constants.launchHeightFeet, Constants.targetHeight);
     }
 
     @Override
     public void periodic() {
+      // just refresh every 10 times (.2s)
+      if (pCount != 10) {
+        pCount++;
+        return;
+      }
+
+      pCount = 0;
       // This method will be called once per scheduler run
-      SmartDashboard.putNumber("Limelight X", tx());
-      SmartDashboard.putNumber("Limelight Y", ty());
-      SmartDashboard.putNumber("Limelight TA", ta());
-      SmartDashboard.putNumber("Limelight Target", tv());
-      SmartDashboard.putNumber("Limelight Distance", distance());
+      SmartDashboard.putNumber("LL X", tx());
+      SmartDashboard.putNumber("LL Y", ty());
+      SmartDashboard.putNumber("LL TA", ta());
+      SmartDashboard.putNumber("LL Target", tv());
+      SmartDashboard.putNumber("LL Distance", distance());
+
+      SmartDashboard.putNumber("LL ProjVel", projVelo());
+      SmartDashboard.putNumber("LL ProjRPM", projRpm());
+      SmartDashboard.putNumber("LL TablRPM", tableRpm());
     }
     
     public double tx() { //gets x from the limelight
@@ -53,7 +68,19 @@ public class Limelight extends SubsystemBase {
     public static double degreesToRadians(double degrees) {
         return degrees * Math.PI / 180;
     }
-    
+
+    public double projVelo() {
+      return calc.getVelo(distance(), degreesToRadians(Constants.limelightMountAngle));
+    }
+
+    public double projRpm() {
+      return projVelo() * 60 / (Constants.launchWheelDiameterFeet * Math.PI);
+    }
+
+    public double tableRpm() {
+      return distance() * 82.738 + 143.2;
+    }
+
     // distanceToTarget:
     //   Return the distance to the hub along the horizontal plane.
     //   Known (measured) values:

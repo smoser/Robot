@@ -2,10 +2,10 @@ package frc.robot.commands;
 
 public class CalcEngine {
 
-  // Everything in Meters
-  public double launchHeight = 1.0f; // about the robot launch height
-  public double targetHeight = 2.4384f; // hub high target height (8ft)
-  public final double gravity = 9.8f;
+  // Everything in Feet
+  public double launchHeight;
+  public double targetHeight;
+  public final double gravity = 32.174f;
 
   /*
   public CalcEngine(double targetHeight) {

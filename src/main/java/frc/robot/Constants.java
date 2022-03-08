@@ -57,4 +57,8 @@ public final class Constants {
     // Wheel size for drive in Feet (6 inches).
     public final static double wheelDiameterFeet = .5f;
 
+    public final static double launchWheelDiameterFeet = .25f;
+    // FIXME: need to measure  launch height.
+    public final static double launchHeightFeet = 42.0f / 12;
+
 }

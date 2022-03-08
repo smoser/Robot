@@ -15,11 +15,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class Shoot extends CommandBase {
   private final Launch m_launch;
   private final Index m_index;
-  private final Limelight m_limelight;
+  private Limelight m_limelight;
   private double launchSpeed;
   private boolean feedRunning = false;
 
   private final Timer m_timer = new Timer();
+
+  private final double closeTargetRpm = 2500;
+  private final double noLimelightRpm = 3500;
 
   /**
    * Creates a new shot command.
@@ -27,23 +30,38 @@ public class Shoot extends CommandBase {
    * @param subsystem The subsystem used by this command.
    */
   public Shoot(Launch launch, Index index, Limelight limelight) {
+    this(launch, index);
+    m_limelight = limelight;
+  }
+
+  public Shoot(Launch launch, Index index) {
     m_launch = launch;
     m_index = index;
-    m_limelight = limelight;
+    m_limelight = null;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(launch, index);
   }
 
+  private double determineLaunchSpeed() {
+    // close angle we shoot at closeAngleSpeed
+    if(m_launch.getAngle()){
+      return closeTargetRpm;
+    }
+
+    if (m_limelight == null || m_limelight.ta() == 0) {
+      return noLimelightRpm;
+    }
+
+    return m_limelight.distance() * 82.738 + 143.2;
+  }
+
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     m_timer.reset();
-    if(m_launch.getAngle()){
-      launchSpeed = 2500;
-    } else {
-      launchSpeed = m_limelight.distance() * 82.738 + 143.2;
-    }
+    launchSpeed = determineLaunchSpeed();
     m_launch.setLaunchRpm(launchSpeed);
   }
 

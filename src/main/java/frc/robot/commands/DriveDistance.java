@@ -17,6 +17,8 @@ public class DriveDistance extends CommandBase {
   //Creating a margin of error for the motors
   private final double errorMargin = 0.2;
   private final double distancePerRotation = Constants.wheelDiameterFeet * Math.PI;
+  private boolean lDone = false;
+  private boolean rDone = false;
 
   // Distance is in inches.
   public DriveDistance(Drive subsystem, Double dist) {
@@ -37,14 +39,40 @@ public class DriveDistance extends CommandBase {
 
       lTarget = m_drive.getLeftRotations() + (m_distance / distancePerRotation) + errorMargin;
       rTarget = m_drive.getRightRotations() + (m_distance / distancePerRotation) + errorMargin;
-      
-      m_drive.setLeftRotations(lTarget);
-      m_drive.setRightRotations(rTarget);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double l = m_drive.getLeftRotations();
+    double r = m_drive.getRightRotations();
+    SmartDashboard.putNumber("DLeftRot", l);
+    SmartDashboard.putNumber("DRghtRot", r);
+    SmartDashboard.putNumber("DLeftTar", lTarget);
+    SmartDashboard.putNumber("DRghtTar", rTarget);
+  
+    if (!rDone) {
+      if (!isDone(rTarget, r, (m_distance < 0))) {
+        rDone = true;
+      } else {
+        m_drive.setRightRotations(rTarget);
+      }
+    }
+    if (!lDone) {
+      if (!isDone(lTarget, r, (m_distance < 0))) {
+        lDone = true;
+      } else {
+        m_drive.setRightRotations(lTarget);
+      }
+    }
+  }
+
+  private boolean isDone(double target, double cur, boolean isPositive) {
+    if (isPositive) {
+        return (target + errorMargin >= cur);
+    }
+    return (target - errorMargin <= cur);
   }
 
   // Called once the command ends or is interrupted.
@@ -60,11 +88,6 @@ public class DriveDistance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_distance < 0) {
-        return (m_drive.getLeftRotations() <= lTarget + errorMargin &&
-                m_drive.getRightRotations() <= rTarget + errorMargin);
-    }
-    return (m_drive.getLeftRotations() >= lTarget - errorMargin &&
-                m_drive.getRightRotations() >= rTarget - errorMargin);
+    return (rDone && lDone);
   }
 }

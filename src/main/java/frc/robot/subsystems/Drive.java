@@ -117,8 +117,8 @@ public class Drive extends SubsystemBase {
     * the follow() method on the SPARK MAX you want to configure as a follower, and by passing
     * as a parameter the SPARK MAX you want to configure as a leader.
     */
-    //leftBack.follow(leftFront);
-    //rightBack.follow(rightFront);
+    leftBack.follow(leftFront);
+    rightBack.follow(rightFront);
 
     // set PID coefficients
     leftFrontPidController.setP(kP);
@@ -150,13 +150,13 @@ public class Drive extends SubsystemBase {
     rightBackPidController.setOutputRange(kMinOutput, kMaxOutput);
 
     // display PID coefficients on SmartDashboard
-    SmartDashboard.putNumber("P Gain", kP);
-    SmartDashboard.putNumber("I Gain", kI);
-    SmartDashboard.putNumber("D Gain", kD);
-    SmartDashboard.putNumber("I Zone", kIz);
-    SmartDashboard.putNumber("Feed Forward", kFF);
-    SmartDashboard.putNumber("Max Output", kMaxOutput);
-    SmartDashboard.putNumber("Min Output", kMinOutput);
+    // SmartDashboard.putNumber("P Gain", kP);
+    // SmartDashboard.putNumber("I Gain", kI);
+    // SmartDashboard.putNumber("D Gain", kD);
+    // SmartDashboard.putNumber("I Zone", kIz);
+    // SmartDashboard.putNumber("Feed Forward", kFF);
+    SmartDashboard.putNumber("DMax Output", kMaxOutput);
+    SmartDashboard.putNumber("DMin Output", kMinOutput);
     SmartDashboard.putNumber("Set Rotations", 0);
   }
 }

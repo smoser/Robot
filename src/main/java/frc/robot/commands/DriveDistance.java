@@ -7,6 +7,7 @@ package frc.robot.commands;
 import frc.robot.subsystems.Drive;
 import frc.robot.Constants;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class DriveDistance extends CommandBase {

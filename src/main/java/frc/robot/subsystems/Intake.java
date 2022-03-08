@@ -39,6 +39,10 @@ public class Intake extends SubsystemBase {
     back.set(ControlMode.PercentOutput, backSpeed);
   }
 
+  public void reverseBack() {
+    back.set(ControlMode.PercentOutput, -backSpeed);
+  }
+
   public void stopBack(){
     back.set(ControlMode.PercentOutput, 0.0);
   }

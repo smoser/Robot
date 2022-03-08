@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Intake extends SubsystemBase {
   private TalonSRX front = new TalonSRX(9);
   private TalonSRX back = new TalonSRX(5);
-  double frontSpeed = 0.5;
+  double frontSpeed = 0.35;
   double backSpeed = 0.5;
   /** Creates a new ExampleSubsystem. */
   public Intake() {}

@@ -21,7 +21,7 @@ public class Shoot extends CommandBase {
 
   private final Timer m_timer = new Timer();
 
-  private final double closeTargetRpm = 2500;
+  private final double closeTargetRpm = 1600;
   private final double noLimelightRpm = 3500;
 
   /**

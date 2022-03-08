@@ -140,5 +140,6 @@ public class Launch extends SubsystemBase {
   public void doInit() {
       setupTalonEncoder(bottom);
       setupTalonEncoder(top);
+      top.setSensorPhase(true);
   }
 }

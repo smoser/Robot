@@ -44,11 +44,14 @@ public final class Constants {
     // Height of the high target in feet.
     public final static double targetHeight = 8.0f;
 
+	// Height from which the ball launches
+	public final static double launchHeight = 44.0f / 12;
+
     // Height of the center of limelight camera from the ground.
     public final static double limelightMountHeight = 30.25f / 12;
 
     // Mount angle in degrees of the limelight from horizontal.
-    public final static double limelightMountAngle = 20.0f;
+    public final static double limelightMountAngle = 22.0f;
 
     //These are the solenoid valve numbers for the variable launch
     public final static int launchSolenoidReverseID = 0;

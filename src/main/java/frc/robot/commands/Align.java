@@ -35,10 +35,10 @@ public class Align extends CommandBase {
   @Override
   public void execute() {
     if(m_limelight.tx() < -1){
-      m_drive.setDrive(0, -0.75);
+      m_drive.setDrive(0, -0.25);
     }
     else if(m_limelight.tx() > 1){
-      m_drive.setDrive(0, 0.75);
+      m_drive.setDrive(0, 0.25);
     }
   }
 

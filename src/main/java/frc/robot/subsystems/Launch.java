@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -24,6 +25,10 @@ public class Launch extends SubsystemBase {
   private DoubleSolenoid launchSolenoid = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, Constants.launchSolenoidForewardID, Constants.launchSolenoidReverseID);
 
   private boolean angleClose = true;
+  private boolean launchAngleTargetClose = true;
+  private boolean switchingAngle = false;
+  private final Timer switchAngleTimer = new Timer();
+
   private int counter = 0;
   private double targetRpm = 0;
 
@@ -37,6 +42,26 @@ public class Launch extends SubsystemBase {
         counter = 0;
         SmartDashboard.putNumber("Bottom Velocity [cur]", getCurRpm());
         SmartDashboard.putNumber("Bottom Output   [cur]", bottom.getMotorOutputPercent());
+    }
+
+    if (launchAngleTargetClose != angleClose) {
+        if (!switchingAngle) {
+            switchAngleTimer.reset();
+            switchAngleTimer.start();
+            switchingAngle = true;
+        }
+
+        if (launchAngleTargetClose) {
+            launchSolenoid.set(Value.kReverse);
+        } else {
+            launchSolenoid.set(Value.kForward);
+        }
+
+        if (switchAngleTimer.get() > 3) {
+            switchAngleTimer.stop();
+            switchingAngle = false;
+            angleClose = launchAngleTargetClose;
+        }
     }
   }
 
@@ -96,13 +121,11 @@ public class Launch extends SubsystemBase {
   }
 
   public void setClose(){
-    launchSolenoid.set(Value.kReverse);
-    angleClose = true;
+    launchAngleTargetClose = true;
   }
 
   public void setFar(){
-    launchSolenoid.set(Value.kForward);
-    angleClose = false;
+    launchAngleTargetClose = false;
   }
 
   public void setOff(){
@@ -141,5 +164,6 @@ public class Launch extends SubsystemBase {
       setupTalonEncoder(bottom);
       setupTalonEncoder(top);
       top.setSensorPhase(true);
+      setClose();
   }
 }

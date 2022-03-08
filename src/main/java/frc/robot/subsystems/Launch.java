@@ -122,7 +122,7 @@ public class Launch extends SubsystemBase {
      * Phase sensor accordingly.
       * Positive Sensor Reading should match Green (blinking) Leds on Talon
      */
-    talon.setSensorPhase(true);
+    talon.setSensorPhase(false);
 
     /* Config the peak and nominal outputs */
     talon.configNominalOutputForward(0, Constants.kTimeoutMs);
@@ -139,7 +139,6 @@ public class Launch extends SubsystemBase {
 
   public void doInit() {
       setupTalonEncoder(bottom);
-      top.setInverted(true);
       setupTalonEncoder(top);
   }
 }

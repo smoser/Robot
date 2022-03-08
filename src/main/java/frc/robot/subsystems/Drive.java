@@ -9,7 +9,6 @@ import java.util.function.DoubleSupplier;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -90,8 +89,8 @@ public class Drive extends SubsystemBase {
     kD = 1;
     kIz = 0;
     kFF = 0;
-    kMaxOutput = 1;
-    kMinOutput = -1;
+    kMaxOutput = 0.6;
+    kMinOutput = -0.6;
 
     /**
      * The restoreFactoryDefaults method can be used to reset the configuration parameters

@@ -96,12 +96,15 @@ public class RobotContainer {
     JoystickButton x3 = new JoystickButton(controller3, XboxController.Button.kX.value);
     JoystickButton b3 = new JoystickButton(controller3, XboxController.Button.kB.value);
     JoystickButton y3 = new JoystickButton(controller3, XboxController.Button.kY.value);
+    JoystickButton rb3 = new JoystickButton(controller3, XboxController.Button.kRightBumper.value);
 
     a.whileHeld(new RunIntake(m_intake));
     a2.whileHeld(new LaunchGroup(m_launch, m_index, m_drive, m_limelight));
     x3.whenPressed(new SwitchIntakeSolenoid(m_intakeSolenoid));
     b3.whenPressed(new SwitchAngle(m_launch));
     y3.whileHeld(new ReverseIntake(m_intake));
+    // shoot independent of limelight.
+    rb3.whileHeld(new Shoot(m_launch, m_index));
 
   }
 

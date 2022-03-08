@@ -33,7 +33,7 @@ public class Index extends SubsystemBase {
   }
 
   public void runIndex(){
-    index.set(-0.8);
+    index.set(0.8);
   }
 
   public void stopIndex(){

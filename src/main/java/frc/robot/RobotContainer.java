@@ -16,6 +16,7 @@ import frc.robot.commands.RunIntake;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.LaunchGroup;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.ShootManual;
 import frc.robot.commands.SwitchAngle;
 import frc.robot.commands.SwitchIntakeSolenoid;
 import frc.robot.commands.UpdateDashboard;
@@ -100,12 +101,12 @@ public class RobotContainer {
     JoystickButton lb3 = new JoystickButton(controller3, XboxController.Button.kLeftBumper.value);
 
     a.whileHeld(new RunIntake(m_intake));
-    lb3.whileHeld(new LaunchGroup(m_launch, m_index, m_drive, m_limelight));
+    lb3.whileHeld(new ShootManual(m_launch, m_index, 2500));
     x3.whenPressed(new SwitchIntakeSolenoid(m_intakeSolenoid));
     b3.whenPressed(new SwitchAngle(m_launch));
     y3.whileHeld(new ReverseIntake(m_intake));
     // shoot independent of limelight.
-    rb3.whileHeld(new Shoot(m_launch, m_index));
+    rb3.whileHeld(new ShootManual(m_launch, m_index, 1600));
   }
 
  

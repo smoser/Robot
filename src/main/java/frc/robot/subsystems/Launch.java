@@ -59,6 +59,7 @@ public class Launch extends SubsystemBase {
 
         if (switchAngleTimer.get() > 3) {
             switchAngleTimer.stop();
+            setOff();
             switchingAngle = false;
             angleClose = launchAngleTargetClose;
         }
@@ -131,7 +132,6 @@ public class Launch extends SubsystemBase {
   public void setOff(){
     launchSolenoid.set(Value.kOff);
   }
-
 
   public void setupTalonEncoder(TalonSRX talon) {
     talon.configFactoryDefault();

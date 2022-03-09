@@ -83,6 +83,11 @@ public class Shoot extends CommandBase {
         feedRunning = true;
       }
     }
+    else if(!launcherReady()){
+      m_launch.stopFeed();
+      m_index.stopIndex();
+      feedRunning = false;
+    }
   }
 
   // Called once the command ends or is interrupted.

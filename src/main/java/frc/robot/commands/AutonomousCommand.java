@@ -13,13 +13,12 @@ public class AutonomousCommand extends SequentialCommandGroup {
     public AutonomousCommand(Launch launch, IntakeSolenoid intakeSolenoid, Index index, Drive drive, Limelight limelight, Intake intake){
         
         addCommands(
+            new DriveTime(drive, 1.5, .6),
             new SwitchIntakeSolenoid(intakeSolenoid),
-            new DriveDistance(drive, (double) 4.0f),
             new RunIntake(intake),
-            new DriveDistance(drive, (double) 2.0f),
+            new DriveTime(drive, 2.0, .6),
             new Align(drive, limelight),
             new Shoot(launch, index, limelight)
-           
         );
     }
 

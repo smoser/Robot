@@ -54,8 +54,8 @@ public final class Constants {
     public final static double limelightMountAngle = 22.0f;
 
     //These are the solenoid valve numbers for the variable launch
-    public final static int launchSolenoidReverseID = 0;
-    public final static int launchSolenoidForewardID = 1;
+    public final static int launchSolenoidReverseID = 1;
+    public final static int launchSolenoidForewardID = 0;
 
     // Wheel size for drive in Feet (6 inches).
     public final static double wheelDiameterFeet = .5f;

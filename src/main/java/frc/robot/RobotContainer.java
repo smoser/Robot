@@ -106,7 +106,7 @@ public class RobotContainer {
     b3.whenPressed(new SwitchAngle(m_launch));
     y3.whileHeld(new ReverseIntake(m_intake));
     // shoot independent of limelight.
-    rb3.whileHeld(new ShootManual(m_launch, m_index, 1800));
+    rb3.whileHeld(new ShootManual(m_launch, m_index, 1900));
   }
 
  

@@ -1,8 +1,5 @@
 package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 
 
 public class LimelightSim extends Limelight {
@@ -10,33 +7,32 @@ public class LimelightSim extends Limelight {
     private NetworkTable table;
 
     public LimelightSim() {
-        table = NetworkTableInstance.getDefault().getTable("limelightSim");
-        SmartDashboard.putNumber("Limelight X", 9);
-        SmartDashboard.putNumber("Limelight Y", 9);
-        SmartDashboard.putNumber("Limelight TA", 9.9);
-        SmartDashboard.putNumber("Limelight Target", 1);
+      eX.setDouble(9);
+      eY.setDouble(9);
+      eArea.setDouble(9.9);
+      eTarget.setBoolean(tv());
     }
 
     @Override
     public void periodic() {
       // This method will be called once per scheduler run
-      SmartDashboard.putNumber("Limelight Distance", distance());
+      eDist.setDouble(distance());
     }
 
-    public double tv() { //gets x from the limelight
-        return SmartDashboard.getNumber("Limelight Target", 9);
+    public boolean tv() { //gets x from the limelight
+        return eTarget.getBoolean(false);
     }
 
     public double tx() { //gets x from the limelight
-        return SmartDashboard.getNumber("Limelight X", 9);
+        return eX.getDouble(9);
     }
 
     public double ty() { //gets y from limelight
-        return SmartDashboard.getNumber("Limelight Y", 9);
+        return eY.getDouble(9);
     }
 
     public double ta() { //gets the area from the limelight
-        return SmartDashboard.getNumber("Limelight TA", 9.9);
+        return eTarget.getDouble(9.9);
     }
 }
 

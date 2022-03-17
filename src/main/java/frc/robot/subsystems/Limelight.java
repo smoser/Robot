@@ -29,6 +29,8 @@ public class Limelight extends SubsystemBase {
     protected SendableChooser<Integer> camModeChooser = new SendableChooser<Integer>();
 
     public final String[] pipelines = {"Byting Irish", "Play"};
+    public final String[] ledModes = {"Pipeline", "Off", "Blink", "On"};
+    public final String[] camModes = {"Vision", "Camera"};
 
     public Limelight() {
       llNetTable = NetworkTableInstance.getDefault().getTable(LimelightStr);
@@ -53,11 +55,12 @@ public class Limelight extends SubsystemBase {
           (table, key, entry, value, flags) -> { handleChange("Pipeline"); },
           EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
 
-      ledModeChooser.addOption("Pipeline", 0);
-      ledModeChooser.addOption("Off", 1);
-      ledModeChooser.addOption("Blink", 2);
-      ledModeChooser.addOption("On", 3);
-      ledModeChooser.setDefaultOption("Pipeline", 0);
+      for (int i=0; i < ledModes.length; i++) {
+          ledModeChooser.addOption(ledModes[i], i);
+          if (i == 0) {
+              ledModeChooser.setDefaultOption(ledModes[i], i);
+          }
+      }
       shuffNetTable.getSubTable("LED").addEntryListener("active",
           (table, key, entry, value, flags) -> { handleChange("LED"); },
           EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
@@ -67,9 +70,12 @@ public class Limelight extends SubsystemBase {
           (table, key, entry, value, flags) -> { handleLimelightChange("LED"); },
           EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
 
-      camModeChooser.addOption("Vision", 0);
-      camModeChooser.addOption("Camera", 1);
-      camModeChooser.setDefaultOption("Vision", 0);
+      for (int i=0; i < camModes.length; i++) {
+          camModeChooser.addOption(camModes[i], i);
+          if (i == 0) {
+              camModeChooser.setDefaultOption(camModes[i], i);
+          }
+      }
       shuffNetTable.getSubTable("CamMode").addEntryListener("active",
           (table, key, entry, value, flags) -> { handleChange("CamMode"); },
           EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
@@ -78,27 +84,40 @@ public class Limelight extends SubsystemBase {
 
     }
 
+    // handle changes found in limelight network table, sync them to the shuffleboard widgets.
     protected void handleLimelightChange(String key) {
+        String newVal = "";
         if (key == "CamMode") {
-            // llNetTable.getEntry("camMode").setDouble(camModeChooser.getSelected());
+            int lVal = (int)llNetTable.getEntry("camMode").getDouble(0.0f);
+            int sVal = camModeChooser.getSelected();
+            if (lVal != sVal) {
+                newVal = camModes[lVal];
+                shuffNetTable.getSubTable("CamMode").getEntry("selected").setString(newVal);
+            }
         } else if (key == "LED") {
             int lVal = (int)llNetTable.getEntry("ledMode").getDouble(0.0f);
-	    int sVal = ledModeChooser.getSelected();
-	    if (lVal != sVal) {
-                shuffNetTable.getSubTable("LED").getEntry("selected").setDouble(lVal);
-	    }
-            // llNetTable.getEntry("ledMode").setDouble(ledModeChooser.getSelected());
+            int sVal = ledModeChooser.getSelected();
+            if (lVal != sVal) {
+                newVal = ledModes[lVal];
+                shuffNetTable.getSubTable("LED").getEntry("selected").setString(newVal);
+            }
         } else if (key == "Pipeline") {
-            // llNetTable.getEntry("pipeline").setDouble(curPipeChooser.getSelected());
-            // shuffNetTable.getSubTable("CamMode").getEntry("selected").setString("Vision");
+            int lVal = (int)llNetTable.getEntry("pipeline").getDouble(0.0f);
+            int sVal = curPipeChooser.getSelected();
+            if (lVal != sVal) {
+                newVal = pipelines[lVal];
+                shuffNetTable.getSubTable("Pipeline").getEntry("selected").setString(newVal);
+            }
         } else {
             System.out.println("Huh: " + key);
         }
     }
 
+    // handle changes made in shuffleboard. this is called via addListener hooks.
     protected void handleChange(String key) {
         if (key == "CamMode") {
             llNetTable.getEntry("camMode").setDouble(camModeChooser.getSelected());
+            llNetTable.getEntry("ledMode").setDouble(1.0f);
         } else if (key == "LED") {
             llNetTable.getEntry("ledMode").setDouble(ledModeChooser.getSelected());
         } else if (key == "Pipeline") {

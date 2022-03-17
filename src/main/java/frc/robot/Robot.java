@@ -36,6 +36,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
+import frc.robot.subsystems.Limelight;
 
 
 public class Robot extends TimedRobot 
@@ -66,6 +67,8 @@ public class Robot extends TimedRobot
   private boolean yeetMode = false;
 
   private PIDController pidController;
+
+  private Limelight llClass;
 
   // transport
   private final Transport transport = new Transport(joystick1, joystick2);
@@ -125,6 +128,8 @@ public class Robot extends TimedRobot
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
+    llClass = new Limelight();
+
     CameraServer.startAutomaticCapture();
 
     table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -154,6 +159,7 @@ public class Robot extends TimedRobot
     if (super.isAutonomous()) {
       return;
     }
+    llClass.periodic();
     transport.UpdateTransport();
     Drive();
     ArmControl();

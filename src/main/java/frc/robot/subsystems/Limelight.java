@@ -17,20 +17,22 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 
 public class Limelight extends SubsystemBase {
 
-    private final String LimelightStr = "Limelight";
+    private final String LimelightStr = "limelight";
     private final String LimelightTabName = "Limelight";
 
     private ShuffleboardTab llsTab = Shuffleboard.getTab(LimelightTabName);
 
     protected NetworkTableEntry eX, eY, eArea, eTarget, eDist;
     protected NetworkTable llNetTable, shuffNetTable;
-    protected SendableChooser<Integer> curPipeChooser = new SendableChooser<Integer>();
-    protected SendableChooser<Integer> ledModeChooser = new SendableChooser<Integer>();
-    protected SendableChooser<Integer> camModeChooser = new SendableChooser<Integer>();
+    protected SendableChooser<Integer> pipelineChooser;
+    protected SendableChooser<Integer> ledModeChooser;
+    protected SendableChooser<Integer> camModeChooser;
 
-    public final String[] pipelines = {"Byting Irish", "Play"};
+    public final String[] pipelines = {"7660", "1731", "2016", "3130", "3504", "7028"};
     public final String[] ledModes = {"Pipeline", "Off", "Blink", "On"};
     public final String[] camModes = {"Vision", "Camera"};
+
+    protected int lastCamMode, lastLedMode, lastPipeline;
 
     public Limelight() {
       llNetTable = NetworkTableInstance.getDefault().getTable(LimelightStr);
@@ -43,45 +45,45 @@ public class Limelight extends SubsystemBase {
       eTarget = llsTab.add("Target", false).getEntry();
       eDist = llsTab.add("Distance", 0.0).getEntry();
 
-      int curPipe = (int)llNetTable.getEntry("getpipe").getDouble(0.0f);
+      // pipeline chooser
+      pipelineChooser = new SendableChooser<Integer>();
+      int curPipeline = (int)llNetTable.getEntry("getpipe").getDouble(0.0f);
       for (int i=0; i < pipelines.length; i++) {
-          curPipeChooser.addOption(pipelines[i], i);
-          if (i == curPipe) {
-              curPipeChooser.setDefaultOption(pipelines[i], i);
+          pipelineChooser.addOption(pipelines[i], i);
+          if (i == curPipeline) {
+              pipelineChooser.setDefaultOption(pipelines[i], i);
           }
       }
-      llsTab.add("Pipeline", curPipeChooser);
-      shuffNetTable.getSubTable("Pipeline").addEntryListener("active",
-          (table, key, entry, value, flags) -> { handleChange("Pipeline"); },
+      llsTab.add("Pipeline", pipelineChooser);
+      llNetTable.addEntryListener("pipeline",
+          (table, key, entry, value, flags) -> { handleLimelightChange("Pipeline"); },
           EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
 
+      // ledMode chooser
+      ledModeChooser = new SendableChooser<Integer>();
       for (int i=0; i < ledModes.length; i++) {
           ledModeChooser.addOption(ledModes[i], i);
           if (i == 0) {
               ledModeChooser.setDefaultOption(ledModes[i], i);
           }
       }
-      shuffNetTable.getSubTable("LED").addEntryListener("active",
-          (table, key, entry, value, flags) -> { handleChange("LED"); },
-          EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
       llsTab.add("LED", ledModeChooser).withWidget(BuiltInWidgets.kSplitButtonChooser);
-
       llNetTable.addEntryListener("ledMode",
           (table, key, entry, value, flags) -> { handleLimelightChange("LED"); },
           EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
 
+      // camModeChooser
+      camModeChooser = new SendableChooser<Integer>();
       for (int i=0; i < camModes.length; i++) {
           camModeChooser.addOption(camModes[i], i);
           if (i == 0) {
               camModeChooser.setDefaultOption(camModes[i], i);
           }
       }
-      shuffNetTable.getSubTable("CamMode").addEntryListener("active",
-          (table, key, entry, value, flags) -> { handleChange("CamMode"); },
-          EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
       llsTab.add("CamMode", camModeChooser).withWidget(BuiltInWidgets.kSplitButtonChooser);
-
-
+      llNetTable.addEntryListener("camMode",
+          (table, key, entry, value, flags) -> { handleLimelightChange("CamMode"); },
+          EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
     }
 
     // handle changes found in limelight network table, sync them to the shuffleboard widgets.
@@ -103,7 +105,7 @@ public class Limelight extends SubsystemBase {
             }
         } else if (key == "Pipeline") {
             int lVal = (int)llNetTable.getEntry("pipeline").getDouble(0.0f);
-            int sVal = curPipeChooser.getSelected();
+            int sVal = pipelineChooser.getSelected();
             if (lVal != sVal) {
                 newVal = pipelines[lVal];
                 shuffNetTable.getSubTable("Pipeline").getEntry("selected").setString(newVal);
@@ -117,29 +119,40 @@ public class Limelight extends SubsystemBase {
     protected void handleChange(String key) {
         if (key == "CamMode") {
             llNetTable.getEntry("camMode").setDouble(camModeChooser.getSelected());
-            llNetTable.getEntry("ledMode").setDouble(1.0f);
         } else if (key == "LED") {
             llNetTable.getEntry("ledMode").setDouble(ledModeChooser.getSelected());
         } else if (key == "Pipeline") {
-            llNetTable.getEntry("pipeline").setDouble(curPipeChooser.getSelected());
+            llNetTable.getEntry("pipeline").setDouble(pipelineChooser.getSelected());
             // shuffNetTable.getSubTable("CamMode").getEntry("selected").setString("Vision");
         } else {
             System.out.println("Huh: " + key);
         }
     }
 
-    /*
-    public void handler(NetworkTable table, String key,
-        NetworkTableEntry entry, NetworkTableValue value, int flags) {
-            String d = value.getString();
-            int v = curPipeChooser.getSelected();
-            System.out.println("Got " + key + " -> " + value.getString());
-            System.out.println("The value: " + v);
+    // needed until https://github.com/wpilibsuite/allwpilib/issues/843
+    public void applyShuffleboardChanges() {
+      int curCamMode = camModeChooser.getSelected();
+      if (lastCamMode != curCamMode) {
+          handleChange("CamMode");
+      }
+      lastCamMode = curCamMode;
+
+      int curLedMode = ledModeChooser.getSelected();
+      if (lastLedMode != curLedMode) {
+          handleChange("LED");
+      }
+      lastLedMode = curLedMode;
+
+      int curPipeline = pipelineChooser.getSelected();
+      if (lastPipeline != curPipeline) {
+          handleChange("Pipeline");
+      }
     }
-    */
 
     @Override
     public void periodic() {
+      applyShuffleboardChanges();
+
       eX.setDouble(tx());
       eY.setDouble(ty());
       eArea.setDouble(ta());
@@ -148,19 +161,19 @@ public class Limelight extends SubsystemBase {
     }
 
     public double tx() { //gets x from the limelight
-        return eX.getDouble(0.0);
+        return llNetTable.getEntry("tx").getDouble(0.0);
     }
 
     public double ty() { //gets y from limelight
-        return eY.getDouble(0.0);
+        return llNetTable.getEntry("ty").getDouble(0.0);
     }
 
      public boolean tv(){
-         return eTarget.getBoolean(false);
+         return (llNetTable.getEntry("tv").getDouble(0.0) != 0.0);
      }
 
      public double ta() { //gets the area from the limelight
-        return eArea.getDouble(0.0);
+        return llNetTable.getEntry("area").getDouble(0.0);
      }
 
     public double distance() { //gets the distance from the limelight

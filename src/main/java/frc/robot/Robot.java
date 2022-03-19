@@ -203,11 +203,17 @@ public class Robot extends TimedRobot
   private void align(){
     if(joystick1.getLeftTriggerAxis() > 0.1){
       double tx = llClass.tx();
-      if(tx < -1.2){
-        drive.arcadeDrive(0, 0.6);
+      if(tx < -4){
+        drive.arcadeDrive(-0.6, 0);
       }
-      else if(tx > 1.2){
-        drive.arcadeDrive(0, 0.6);
+      else if(tx > -4 && tx < -1){
+        drive.arcadeDrive(-0.45, 0);
+      }
+      else if(tx < 4 && tx > 1.2){
+        drive.arcadeDrive(0.4, 0);
+      }
+      else if(tx > 4){
+        drive.arcadeDrive(0.6, 0);
       }
 
     }

@@ -49,7 +49,7 @@ public class Robot extends TimedRobot
 
   //controllers
   private final XboxController joystick1 = new XboxController(0);
-  private final XboxController joystick2 = new XboxController(1);
+  // private final XboxController joystick2 = new XboxController(1);
 
   // motors controllers
   public static TalonSRX left1 = new TalonSRX(2);
@@ -71,7 +71,7 @@ public class Robot extends TimedRobot
   private Limelight llClass;
 
   // transport
-  private final Transport transport = new Transport(joystick1, joystick2);
+  private final Transport transport = new Transport();
 
   // hangerSolenoid prior numbers (0, 1)
   private final DoubleSolenoid armSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 4, 6);
@@ -166,7 +166,7 @@ public class Robot extends TimedRobot
     CheckArm();
     PIDSearch();
     ControlLimelight();
-    CalculateDistance();
+    // CalculateDistance();
     align();
 
     lastLaunchPress = joystick1.getRightTriggerAxis();
@@ -215,7 +215,7 @@ public class Robot extends TimedRobot
         yeetMode = !yeetMode;
       }
       if (yeetMode) {
-        if(joystick2.getAButton()){
+        if(joystick1.getAButton()){
           drive.arcadeDrive(joystick1.getLeftX() * 1.0f, joystick1.getLeftY() * 1.0f, false);
         }
         else{
@@ -223,7 +223,7 @@ public class Robot extends TimedRobot
         }
       } 
       else {
-        if(joystick2.getAButton()){
+        if(joystick1.getAButton()){
           drive.arcadeDrive(joystick1.getLeftX() * 0.75f, joystick1.getLeftY() * 0.9f, false);
         }
         else{

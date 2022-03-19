@@ -9,7 +9,6 @@ import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.NetworkTableValue;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -38,7 +37,6 @@ public class Limelight extends SubsystemBase {
       llNetTable = NetworkTableInstance.getDefault().getTable(LimelightStr);
       shuffNetTable = NetworkTableInstance.getDefault().getTable("Shuffleboard").getSubTable(LimelightTabName);
 
-      NetworkTableInstance n = NetworkTableInstance.getDefault();
       eX = llsTab.add("TX", 0).getEntry();
       eY = llsTab.add("TY", 0).getEntry();
       eArea  = llsTab.add("Area", 0).getEntry();

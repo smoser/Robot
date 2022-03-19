@@ -128,16 +128,7 @@ public class Robot extends TimedRobot
 
     llClass = new Limelight();
 
-    // CameraServer.startAutomaticCapture();
-
-    table = NetworkTableInstance.getDefault().getTable("limelight");
-    tv = table.getEntry("tv");
-    tx = table.getEntry("tx");
-    ty = table.getEntry("ty");
-    ta = table.getEntry("ta");
-    pipeline = table.getEntry("pipeline");
-
-    deltaHeight = targetHeight - limelightHeight;
+    //CameraServer.startAutomaticCapture();
 
     transport.Reset();
 
@@ -163,7 +154,6 @@ public class Robot extends TimedRobot
     ArmControl();
     CheckArm();
     PIDSearch();
-    ControlLimelight();
     // CalculateDistance();
     align();
 
@@ -172,37 +162,6 @@ public class Robot extends TimedRobot
 
   private void CheckArm() {
     
-  }
-
-  private void ControlLimelight() {
-    if (joystick1.getBButtonPressed()) {
-      currentPipeline += 1;
-      if (currentPipeline > 1) {
-        currentPipeline = 0;
-      }
-      pipeline.setDouble(currentPipeline);
-    }
-
-    if (hasTarget >= 0.1f) {
-      CalculateDistance();
-    } else {
-      distance = -1;
-    }
-    SmartDashboard.putNumber("Distance", distance);
-
-    // read values periodically
-    hasTarget = tv.getDouble(0.0);
-    angleOffsetX = tx.getDouble(0.0);
-    angleOffsetY = ty.getDouble(0.0);
-    area = ta.getDouble(0.0);
-
-    SmartDashboard.putNumber("HasTarget", hasTarget);
-
-    // post to smart dashboard periodically
-    SmartDashboard.putNumber("LimelightX", angleOffsetX);
-    SmartDashboard.putNumber("LimelightY", angleOffsetY);
-    SmartDashboard.putNumber("LimelightArea", area);
-    SmartDashboard.putNumber("Current Pipeline", pipeline.getDouble(0.0));
   }
 
   private void Drive() {
@@ -256,11 +215,11 @@ public class Robot extends TimedRobot
 
   private void align(){
     if(joystick1.getLeftTriggerAxis() > 0.1){
-
-      if(angleOffsetX < -1.2){
+      double tx = llClass.tx();
+      if(tx < -1.2){
         drive.arcadeDrive(0, 0.6);
       }
-      else if(angleOffsetX > 1.2){
+      else if(tx > 1.2){
         drive.arcadeDrive(0, 0.6);
       }
 

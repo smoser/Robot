@@ -34,11 +34,17 @@ public class Align extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_limelight.tx() < -1){
-      m_drive.setDrive(0, -0.25);
+    if(m_limelight.tx() < -1.2 && m_limelight.tx()> -3.5){
+      m_drive.setDrive(0, -0.4);
     }
-    else if(m_limelight.tx() > 1){
-      m_drive.setDrive(0, 0.25);
+    else if(m_limelight.tx() < -3.5){
+      m_drive.setDrive(0, -0.6);
+    }
+    else if(m_limelight.tx() > 1 && m_limelight.tx() < 3.5){
+      m_drive.setDrive(0, 0.4);
+    }
+    else if(m_limelight.tx() > 3.5){
+      m_drive.setDrive(0, 0.6);
     }
   }
 

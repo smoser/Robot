@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.Align;
 import frc.robot.commands.AutoIndex;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.TankDriveRobot;
@@ -105,6 +106,7 @@ public class RobotContainer {
     JoystickButton lb3 = new JoystickButton(controller3, XboxController.Button.kLeftBumper.value);
     JoystickButton four2 = new JoystickButton(controller2, 4);
     JoystickButton twelve2 = new JoystickButton(controller2, 12);
+    JoystickButton one2 = new JoystickButton(controller2, 1);
 
     a.whileHeld(new RunIntake(m_intake));
     lb3.whileHeld(new ShootManual(m_launch, m_index, 2000));
@@ -115,6 +117,7 @@ public class RobotContainer {
     rb3.whileHeld(new ShootManual(m_launch, m_index, 1900));
     four2.whileHeld(new ExtendClimb(m_climb));
     twelve2.whileHeld(new RetractClimb(m_climb));
+    one2.whileHeld(new Align(m_drive, m_limelight));
   }
 
  

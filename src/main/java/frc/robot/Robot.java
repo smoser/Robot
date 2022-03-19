@@ -21,14 +21,12 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 //import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
+// import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.motorcontrol.PWMTalonSRX;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.math.controller.PIDController;
@@ -74,7 +72,7 @@ public class Robot extends TimedRobot
   private final Transport transport = new Transport();
 
   // hangerSolenoid prior numbers (0, 1)
-  private final DoubleSolenoid armSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 4, 6);
+  // private final DoubleSolenoid armSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 4, 6);
   //private DoubleSolenoid hangerSolenoid = new DoubleSolenoid(5, 7);
   //time_buddhist_cronology
   // limelight
@@ -322,17 +320,7 @@ public class Robot extends TimedRobot
 
   private void ArmControl()
   {
-    if(joystick1.getLeftStickButtonPressed())
-    {
-      if (armSolenoid.get() == Value.kForward)
-      {
-        armSolenoid.set(Value.kReverse);
-      }
-      else
-      {
-        armSolenoid.set(Value.kForward);
-      }
-    }
+
   }
 
   @Override
@@ -423,7 +411,7 @@ public class Robot extends TimedRobot
     autonTimer--;
     if (autonTimer <= 0 && autonTimer > -200)
     {
-      armSolenoid.set(Value.kForward);
+      // armSolenoid.set(Value.kForward);
       //transport.StopLaunch();
       drive.arcadeDrive(-0.45f, 0);
       left1.set(ControlMode.PercentOutput, left2.getMotorOutputPercent());

@@ -76,18 +76,7 @@ public class Robot extends TimedRobot
   //private DoubleSolenoid hangerSolenoid = new DoubleSolenoid(5, 7);
   //time_buddhist_cronology
   // limelight
-  NetworkTable table;
-  NetworkTableEntry tv;
-  NetworkTableEntry tx;
-  NetworkTableEntry ty;
-  NetworkTableEntry ta;
-  NetworkTableEntry pipeline;
-  private int currentPipeline = 1;
 
-  double hasTarget;
-  double angleOffsetX;
-  double angleOffsetY;
-  double area;
 
   public double limelightHeight = 2.58; // feet
   public double targetHeight = 7; // also feet
@@ -138,7 +127,6 @@ public class Robot extends TimedRobot
     left1.setNeutralMode(NeutralMode.Brake);
     right1.setNeutralMode(NeutralMode.Brake);
 
-    pipeline.setDouble(1);
     transport.InitTransport();
     
   }
@@ -153,7 +141,6 @@ public class Robot extends TimedRobot
     Drive();
     ArmControl();
     CheckArm();
-    PIDSearch();
     // CalculateDistance();
     align();
 
@@ -239,41 +226,9 @@ public class Robot extends TimedRobot
       //hangerSolenoid.set(Value.kReverse); }
     //if(joystick2.getLeftTriggerAxis() > 0.05f) } // winchMotor.set(-0.50f); }
     }  
-  private void CalculateDistance() {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-    distance = deltaHeight / (Math.tan(Math.toRadians(limelightAngle + angleOffsetY)));
-  }
 
   public void PIDSearch() {
-    if (joystick1.getLeftTriggerAxis() > 0 && hasTarget == 1 && Math.abs(angleOffsetX) > 1) {
-      double scale = 0.65f;
-      if (Math.abs(angleOffsetX) < 8 && neutralZone < 10) {
-        // improvement if angleOffsetX changes we are moving
-        Rotate(0.05f * angleOffsetX);
-        neutralZone++;
-        return;
-      }
-      if (Math.abs(angleOffsetX) < 8 && neutralZone > 10) {
-        scale = 0.3f;
-      }
 
-      driverInputAccepted = false;
-      neutralZone++;
-      final double signal = -scale * pidController.calculate(angleOffsetX, 0);
-      Rotate(signal);
-    }
-    else
-    {
-      driverInputAccepted = true;
-      neutralZone = 0;
-    }
-    if(joystick1.getRightTriggerAxis() > 0.5f)
-    {
-      transport.StartLaunch(0.75f);
-    }
-    else if (joystick1.getRightTriggerAxis() < 0.5f && lastLaunchPress >= 0.5f)
-    {
-      transport.StopLaunch();
-    }
   }
   
 

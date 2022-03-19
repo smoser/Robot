@@ -128,7 +128,7 @@ public class Robot extends TimedRobot
 
     llClass = new Limelight();
 
-    CameraServer.startAutomaticCapture();
+    // CameraServer.startAutomaticCapture();
 
     table = NetworkTableInstance.getDefault().getTable("limelight");
     tv = table.getEntry("tv");

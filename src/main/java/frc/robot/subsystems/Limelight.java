@@ -28,7 +28,7 @@ public class Limelight extends SubsystemBase {
     protected SendableChooser<Integer> ledModeChooser = new SendableChooser<Integer>();
     protected SendableChooser<Integer> camModeChooser = new SendableChooser<Integer>();
 
-    public final String[] pipelines = {"Zero", "7660", "2016", "3130", "3504", "7028"};
+    public final String[] pipelines = {"7660", "1731", "2016", "3130", "3504", "7028", "Camera"};
     public final String[] ledModes = {"Pipeline", "Off", "Blink", "On"};
     public final String[] camModes = {"Vision", "Camera"};
 

@@ -15,12 +15,15 @@ import frc.robot.commands.TankDriveRobot;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.LaunchGroup;
+import frc.robot.commands.RetractClimb;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootManual;
 import frc.robot.commands.SwitchAngle;
 import frc.robot.commands.SwitchIntakeSolenoid;
 import frc.robot.commands.UpdateDashboard;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ExtendClimb;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeSolenoid;
@@ -48,6 +51,7 @@ public class RobotContainer {
   private final Launch m_launch = new Launch();
   private final Index m_index = new Index();
   private final Sensors m_sensors = new Sensors();
+  private final Climb m_climb = new Climb();
   private final IntakeSolenoid m_intakeSolenoid = new IntakeSolenoid();
   private final AutonomousCommand m_autoCommand;
   
@@ -99,6 +103,8 @@ public class RobotContainer {
     JoystickButton y3 = new JoystickButton(controller3, XboxController.Button.kY.value);
     JoystickButton rb3 = new JoystickButton(controller3, XboxController.Button.kRightBumper.value);
     JoystickButton lb3 = new JoystickButton(controller3, XboxController.Button.kLeftBumper.value);
+    JoystickButton four2 = new JoystickButton(controller2, 4);
+    JoystickButton twelve2 = new JoystickButton(controller2, 12);
 
     a.whileHeld(new RunIntake(m_intake));
     lb3.whileHeld(new ShootManual(m_launch, m_index, 2000));
@@ -107,6 +113,8 @@ public class RobotContainer {
     y3.whileHeld(new ReverseIntake(m_intake));
     // shoot independent of limelight.
     rb3.whileHeld(new ShootManual(m_launch, m_index, 1900));
+    four2.whileHeld(new ExtendClimb(m_climb));
+    twelve2.whileHeld(new RetractClimb(m_climb));
   }
 
  

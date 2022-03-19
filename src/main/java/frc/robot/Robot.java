@@ -165,8 +165,9 @@ public class Robot extends TimedRobot
     ArmControl();
     CheckArm();
     PIDSearch();
-    //ControlLimelight();
+    ControlLimelight();
     CalculateDistance();
+    align();
 
     lastLaunchPress = joystick1.getRightTriggerAxis();
   }
@@ -255,6 +256,18 @@ public class Robot extends TimedRobot
     right1.set(ControlMode.PercentOutput, right2.getMotorOutputPercent());
   }
 
+  private void align(){
+    if(joystick1.getLeftTriggerAxis() > 0.1){
+
+      if(angleOffsetX < -1.2){
+        drive.arcadeDrive(0, 0.6);
+      }
+      else if(angleOffsetX > 1.2){
+        drive.arcadeDrive(0, 0.6);
+      }
+
+    }
+  }
 
 //This is the codeing system for our actuall programing for our auton.
 

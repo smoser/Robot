@@ -60,4 +60,11 @@ public final class Constants {
     // Wheel size for drive in Feet (6 inches).
     public final static double wheelDiameterFeet = .5f;
 
+    // launch wheels are 3 and 7/8 inches.
+    public final static double launchWheelDiameterFeet = 3.875f / 12;
+
+    // launch angle of "long range"  shot.
+    public final static double launchAngleFarDegrees = 55.0f;
+
+
 }

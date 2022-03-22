@@ -9,17 +9,11 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Limelight;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-/** An example command that uses an example subsystem. */
 public class Align extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Drive m_drive;
   private final Limelight m_limelight;
+  private final double deadZone = .7f;
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
   public Align(Drive drive, Limelight limelight) {
     m_drive = drive;
     m_limelight = limelight;
@@ -34,18 +28,18 @@ public class Align extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_limelight.tx() < -1.2 && m_limelight.tx()> -3.5){
-      m_drive.setDrive(0, 0.4);
+    double tx = m_limelight.tx();
+    double kP = -0.3f;
+    double minCommand = 0.05f;
+    double adj = 0.0f;
+
+    double power = kP * Math.abs(tx) + minCommand;
+    if (tx > deadZone) {
+        adj = -power;
+    } else if (tx < deadZone) {
+        adj = power;
     }
-    else if(m_limelight.tx() < -3.5){
-      m_drive.setDrive(0, 0.6);
-    }
-    else if(m_limelight.tx() > 1 && m_limelight.tx() < 3.5){
-      m_drive.setDrive(0, -0.4);
-    }
-    else if(m_limelight.tx() > 3.5){
-      m_drive.setDrive(0, -0.6);
-    }
+    m_drive.setDrive(0, adj);
   }
 
   // Called once the command ends or is interrupted.
@@ -57,11 +51,13 @@ public class Align extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_limelight.tx() > -0.7 && m_limelight.tx() < 0.7){
-      return true;
-    }
-    else{
+      if (!m_limelight.tv()) {
+          return true;
+      }
+      double tx = m_limelight.tx();
+      if ((0 - deadZone) < tx && (tx > deadZone)) {
+          return true;
+      }
       return false;
-    }
   }
 }

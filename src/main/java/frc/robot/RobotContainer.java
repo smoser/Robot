@@ -107,6 +107,7 @@ public class RobotContainer {
     JoystickButton four2 = new JoystickButton(controller2, 4);
     JoystickButton twelve2 = new JoystickButton(controller2, 12);
     JoystickButton one2 = new JoystickButton(controller2, 1);
+    JoystickButton a3 = new JoystickButton(controller3, 1);
 
     a.whileHeld(new RunIntake(m_intake));
     lb3.whileHeld(new ShootManual(m_launch, m_index, 2000));
@@ -118,6 +119,7 @@ public class RobotContainer {
     four2.whileHeld(new ExtendClimb(m_climb));
     twelve2.whileHeld(new RetractClimb(m_climb));
     one2.whenHeld(new Align(m_drive, m_limelight));
+    a3.whenHeld(new ShootManual(m_launch, m_index, 2350));
   }
 
  

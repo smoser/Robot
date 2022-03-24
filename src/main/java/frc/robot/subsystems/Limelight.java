@@ -46,8 +46,10 @@ public class Limelight extends SubsystemBase {
       eDist = llsTab.add("Distance", 0.0).getEntry();
 
       // pipeline chooser
+      double defaultPipeline = 5.0; // 7028
+      llNetTable.getEntry("pipeline").setDouble(defaultPipeline);
       pipelineChooser = new SendableChooser<Integer>();
-      int curPipeline = (int)llNetTable.getEntry("getpipe").getDouble(0.0f);
+      int curPipeline = (int)llNetTable.getEntry("getpipe").getDouble(defaultPipeline);
       for (int i=0; i < pipelines.length; i++) {
           pipelineChooser.addOption(pipelines[i], i);
           if (i == curPipeline) {

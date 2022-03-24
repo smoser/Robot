@@ -117,7 +117,7 @@ public class RobotContainer {
     rb3.whileHeld(new ShootManual(m_launch, m_index, 1900));
     four2.whileHeld(new ExtendClimb(m_climb));
     twelve2.whileHeld(new RetractClimb(m_climb));
-    one2.whileHeld(new Align(m_drive, m_limelight));
+    one2.whenHeld(new Align(m_drive, m_limelight));
   }
 
  

@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.util.net.PortForwarder;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
@@ -80,6 +81,11 @@ public class RobotContainer {
   
     m_launch.doInit();
 
+    PortForwarder.add(8811, "10.76.60.11", 5801);
+    PortForwarder.add(8810, "10.76.60.11", 5800);
+
+    
+
     CameraServer.startAutomaticCapture();
 
     m_drive.doInit();
@@ -119,7 +125,7 @@ public class RobotContainer {
     four2.whileHeld(new ExtendClimb(m_climb));
     twelve2.whileHeld(new RetractClimb(m_climb));
     one2.whenHeld(new Align(m_drive, m_limelight));
-    a3.whenHeld(new ShootManual(m_launch, m_index, 2350));
+    a3.whenHeld(new ShootManual(m_launch, m_index, 2300));
   }
 
  

@@ -42,7 +42,7 @@ public class Drive extends SubsystemBase {
   }
 
   public void tankDrive(DoubleSupplier leftSpeed, DoubleSupplier rightSpeed){
-    driveDifferential.tankDrive(leftSpeed.getAsDouble() * 0.8f, rightSpeed.getAsDouble() * 0.8f);
+    driveDifferential.tankDrive(leftSpeed.getAsDouble() * 0.75f, rightSpeed.getAsDouble() * 0.75f);
   }
 
   public void setDrive(double speed, double rotation){

@@ -81,8 +81,12 @@ public class RobotContainer {
   
     m_launch.doInit();
 
-    PortForwarder.add(8811, "10.76.60.11", 5801);
-    PortForwarder.add(8810, "10.76.60.11", 5800);
+    PortForwarder.add(5801, "10.76.60.11", 5801);
+    PortForwarder.add(5800, "10.76.60.11", 5800);
+    PortForwarder.add(5802, "10.76.60.11", 5802);
+    PortForwarder.add(5803, "10.76.60.11", 5803);
+    PortForwarder.add(5804, "10.76.60.11", 5804);
+    PortForwarder.add(5805, "10.76.60.11", 5805);
 
     
 
@@ -114,6 +118,7 @@ public class RobotContainer {
     JoystickButton twelve2 = new JoystickButton(controller2, 12);
     JoystickButton one2 = new JoystickButton(controller2, 1);
     JoystickButton a3 = new JoystickButton(controller3, 1);
+    JoystickButton five2 = new JoystickButton(controller2, 5);
 
     a.whileHeld(new RunIntake(m_intake));
     lb3.whileHeld(new ShootManual(m_launch, m_index, 2000));
@@ -126,6 +131,7 @@ public class RobotContainer {
     twelve2.whileHeld(new RetractClimb(m_climb));
     one2.whenHeld(new Align(m_drive, m_limelight));
     a3.whenHeld(new ShootManual(m_launch, m_index, 2300));
+    five2.whileHeld(new ShootManual(m_launch, m_index, 5000));
   }
 
  

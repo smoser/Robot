@@ -38,13 +38,13 @@ public class Align extends CommandBase {
       m_drive.setDrive(0, 0.4);
     }
     else if(m_limelight.tx() < -3.5){
-      m_drive.setDrive(0, 0.5);
+      m_drive.setDrive(0, 0.6);
     }
     else if(m_limelight.tx() > 1 && m_limelight.tx() < 3.5){
       m_drive.setDrive(0, -0.4);
     }
     else if(m_limelight.tx() > 3.5){
-      m_drive.setDrive(0, -0.5);
+      m_drive.setDrive(0, -0.6);
     }
   }
 
@@ -57,7 +57,7 @@ public class Align extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_limelight.tx() > -1 && m_limelight.tx() < 1){
+    if(m_limelight.tx() > -0.7 && m_limelight.tx() < 0.7){
       return true;
     }
     else{

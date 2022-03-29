@@ -119,6 +119,7 @@ public class RobotContainer {
     JoystickButton one2 = new JoystickButton(controller2, 1);
     JoystickButton a3 = new JoystickButton(controller3, 1);
     JoystickButton five2 = new JoystickButton(controller2, 5);
+    JoystickButton four1 = new JoystickButton(controller1, 4);
 
     a.whileHeld(new RunIntake(m_intake));
     lb3.whileHeld(new ShootManual(m_launch, m_index, 2000));
@@ -128,7 +129,7 @@ public class RobotContainer {
     // shoot independent of limelight.
     rb3.whileHeld(new ShootManual(m_launch, m_index, 1900));
     four2.whileHeld(new ExtendClimb(m_climb));
-    twelve2.whileHeld(new RetractClimb(m_climb));
+    four1.whileHeld(new RetractClimb(m_climb));
     one2.whenHeld(new Align(m_drive, m_limelight));
     a3.whenHeld(new ShootManual(m_launch, m_index, 2300));
     five2.whileHeld(new ShootManual(m_launch, m_index, 5000));

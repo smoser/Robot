@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Sensors;
 
 import java.util.function.DoubleSupplier;
 
@@ -14,14 +15,16 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class RetractClimb extends CommandBase {
   private final Climb m_climb;
+  private final Sensors m_sensor;
 
   /**
    *
    *
    * @param subsystem The subsystem used by this command.
    */
-  public RetractClimb(Climb subsystem) {
+  public RetractClimb(Climb subsystem, Sensors sensor) {
     m_climb = subsystem;
+    m_sensor = sensor;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -48,6 +51,11 @@ public class RetractClimb extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if(m_sensor.getClimbSensor()){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 }

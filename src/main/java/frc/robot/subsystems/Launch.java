@@ -32,7 +32,7 @@ public class Launch extends SubsystemBase {
   private int counter = 0;
   private double targetRpm = 0;
 
-  double feedSpeed = 0.2;
+  double feedSpeed = 0.8;
 
   @Override
   public void periodic() {

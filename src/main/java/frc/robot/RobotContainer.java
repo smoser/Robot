@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Align;
 import frc.robot.commands.AutoIndex;
 import frc.robot.commands.AutonomousCommand;
+import frc.robot.commands.DriveFast;
 import frc.robot.commands.TankDriveRobot;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.ReverseIntake;
@@ -120,6 +121,7 @@ public class RobotContainer {
     JoystickButton a3 = new JoystickButton(controller3, 1);
     JoystickButton five2 = new JoystickButton(controller2, 5);
     JoystickButton four1 = new JoystickButton(controller1, 4);
+    JoystickButton two2 = new JoystickButton(controller2, 2);
 
     a.whileHeld(new RunIntake(m_intake));
     lb3.whileHeld(new ShootManual(m_launch, m_index, 2000));
@@ -133,6 +135,7 @@ public class RobotContainer {
     one2.whenHeld(new Align(m_drive, m_limelight));
     a3.whenHeld(new ShootManual(m_launch, m_index, 2300));
     five2.whileHeld(new ShootManual(m_launch, m_index, 5000));
+    two2.whileHeld(new DriveFast(m_drive, controller1::getLeftY, controller2::getLeftY));
   }
 
  

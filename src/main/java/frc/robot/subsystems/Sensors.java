@@ -14,6 +14,11 @@ public class Sensors extends SubsystemBase {
 
   private DigitalInput breakBeam0 = new DigitalInput(0);
   private DigitalInput breakBeam1 = new DigitalInput(1);
+  private DigitalInput climbSensor = new DigitalInput(2);
+
+  public boolean getClimbSensor(){
+    return climbSensor.get();
+  }
 
   public boolean getSensor0(){
     return breakBeam0.get();

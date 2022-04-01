@@ -131,7 +131,7 @@ public class RobotContainer {
     // shoot independent of limelight.
     rb3.whileHeld(new ShootManual(m_launch, m_index, 1900));
     four2.whileHeld(new ExtendClimb(m_climb));
-    four1.whileHeld(new RetractClimb(m_climb));
+    four1.whileHeld(new RetractClimb(m_climb, m_sensors));
     one2.whenHeld(new Align(m_drive, m_limelight));
     a3.whenHeld(new ShootManual(m_launch, m_index, 2300));
     five2.whileHeld(new ShootManual(m_launch, m_index, 5000));

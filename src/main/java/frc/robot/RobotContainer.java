@@ -9,6 +9,7 @@ import edu.wpi.first.util.net.PortForwarder;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Align;
 import frc.robot.commands.AutoIndex;
@@ -60,7 +61,8 @@ public class RobotContainer {
   private final Climb m_climb = new Climb();
   private final IntakeSolenoid m_intakeSolenoid = new IntakeSolenoid();
 
-  private final CommandBase m_autoCommand;
+  private final CommandBase autonOrig, autonFourBall, autonTurnTwoBall;
+  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   private XboxController controller1 = new XboxController(0);
   private XboxController controller2 = new XboxController(1);
@@ -82,9 +84,10 @@ public class RobotContainer {
 
     m_drive.setDefaultCommand(new TankDriveRobot(m_drive, controller1::getLeftY, controller2::getLeftY));
 
-    // m_autoCommand = new OriginalAuton(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
-    // m_autoCommand = new FourBallAuton(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
-    m_autoCommand = new TurnTwoBallAuton(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
+    autonOrig = new OriginalAuton(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
+    autonFourBall = new FourBallAuton(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
+    autonTurnTwoBall = new TurnTwoBallAuton(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
+    setupAutonomousChoice();
 
     m_launch.doInit();
 
@@ -152,7 +155,14 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return m_autoCommand;
+    return m_chooser.getSelected();
+  }
+
+  public void setupAutonomousChoice() {
+    m_chooser.addOption("4 Ball", autonFourBall);
+    m_chooser.addOption("Turn 2 Ball", autonTurnTwoBall);
+    m_chooser.setDefaultOption("Orig 2 Ball", autonOrig);
+    SmartDashboard.putData(m_chooser);
   }
 
   public XboxController getController1(){

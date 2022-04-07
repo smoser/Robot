@@ -68,4 +68,7 @@ public final class Constants {
 
 	// number of sparkmax rotations per 360 degrees
 	public final static double rotationsPer360 = 50.0;
+
+	// time for teleop during a match in seconds (2:15)
+	public final static int telopTime = 135;
 }

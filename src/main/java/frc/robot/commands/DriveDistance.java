@@ -63,7 +63,7 @@ public class DriveDistance extends CommandBase {
       if (!isDone(lTarget, r, (m_distance < 0))) {
         lDone = true;
       } else {
-        m_drive.setRightRotations(lTarget);
+        m_drive.setLeftRotations(lTarget);
       }
     }
   }

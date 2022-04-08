@@ -56,8 +56,6 @@ public class Drive extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Left Velocity", leftFrontEncoder.getVelocity());
-    SmartDashboard.putNumber("Right Velocity", rightFrontEncoder.getVelocity());
   }
 
   @Override
@@ -81,20 +79,14 @@ public class Drive extends SubsystemBase {
     rightFrontPidController.setReference(target, CANSparkMax.ControlType.kPosition);
   }
 
+  public void resetEncoders(){
+    leftFrontEncoder.setPosition(0);
+    leftBackEncoder.setPosition(0);
+    rightFrontEncoder.setPosition(0);
+    rightBackEncoder.setPosition(0);
+  }
+
   public void doInit() {
-
-    leftGroup.setInverted(true);
-
-    // PID coefficients
-    double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
-    kP = 0.1;
-    kI = 1e-4;
-    kD = 1;
-    kIz = 0;
-    kFF = 0;
-    kMaxOutput = 0.6;
-    kMinOutput = -0.6;
-
     /**
      * The restoreFactoryDefaults method can be used to reset the configuration parameters
      * in the SPARK MAX to their factory default state. If no argument is passed, these
@@ -105,25 +97,30 @@ public class Drive extends SubsystemBase {
     rightFront.restoreFactoryDefaults();
     rightBack.restoreFactoryDefaults();
 
+    rightGroup.setInverted(true);
+
+    resetEncoders();
+
     /**
      * In order to use PID functionality for a controller, a SparkMaxPIDController object
      * is constructed by calling the getPIDController() method on an existing
      * CANSparkMax object
      */
     leftFrontPidController = leftFront.getPIDController();
-    leftBackPidController = leftBack.getPIDController();
+    //leftBackPidController = leftBack.getPIDController(); //don't need to set PID because of follow
     rightFrontPidController = rightFront.getPIDController();
-    rightBackPidController = rightBack.getPIDController();
-
-     /**
-    * In CAN mode, one SPARK MAX can be configured to follow another. This is done by calling
-    * the follow() method on the SPARK MAX you want to configure as a follower, and by passing
-    * as a parameter the SPARK MAX you want to configure as a leader.
-    */
-    leftBack.follow(leftFront);
-    rightBack.follow(rightFront);
+    //rightBackPidController = rightBack.getPIDController(); //don't need to set PID because of follow
 
     // set PID coefficients
+    double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
+    kP = 0.1;
+    kI = 1e-4;
+    kD = 1;
+    kIz = 0;
+    kFF = 0;
+    kMaxOutput = 0.25;//will increase after testing
+    kMinOutput = -0.25;//will increase after testing
+
     leftFrontPidController.setP(kP);
     leftFrontPidController.setI(kI);
     leftFrontPidController.setD(kD);
@@ -131,12 +128,15 @@ public class Drive extends SubsystemBase {
     leftFrontPidController.setFF(kFF);
     leftFrontPidController.setOutputRange(kMinOutput, kMaxOutput);
 
+    //don't need to set because leftback is set to follow leftfont 
+    /*
     leftBackPidController.setP(kP);
     leftBackPidController.setI(kI);
     leftBackPidController.setD(kD);
     leftBackPidController.setIZone(kIz);
     leftBackPidController.setFF(kFF);
     leftBackPidController.setOutputRange(kMinOutput, kMaxOutput);
+    */
 
     rightFrontPidController.setP(kP);
     rightFrontPidController.setI(kI);
@@ -145,21 +145,27 @@ public class Drive extends SubsystemBase {
     rightFrontPidController.setFF(kFF);
     rightFrontPidController.setOutputRange(kMinOutput, kMaxOutput);
 
+    //don't need to set because rightback is set to follow rightfont 
+    /*
     rightBackPidController.setP(kP);
     rightBackPidController.setI(kI);
     rightBackPidController.setD(kD);
     rightBackPidController.setIZone(kIz);
     rightBackPidController.setFF(kFF);
     rightBackPidController.setOutputRange(kMinOutput, kMaxOutput);
+    */
+
+    /**
+    * In CAN mode, one SPARK MAX can be configured to follow another. This is done by calling
+    * the follow() method on the SPARK MAX you want to configure as a follower, and by passing
+    * as a parameter the SPARK MAX you want to configure as a leader.
+    */
+    leftBack.follow(leftFront);
+    rightBack.follow(rightFront);
 
     // display PID coefficients on SmartDashboard
-    // SmartDashboard.putNumber("P Gain", kP);
-    // SmartDashboard.putNumber("I Gain", kI);
-    // SmartDashboard.putNumber("D Gain", kD);
-    // SmartDashboard.putNumber("I Zone", kIz);
-    // SmartDashboard.putNumber("Feed Forward", kFF);
-    SmartDashboard.putNumber("DMax Output", kMaxOutput);
-    SmartDashboard.putNumber("DMin Output", kMinOutput);
-    SmartDashboard.putNumber("Set Rotations", 0);
+    SmartDashboard.putNumber("P", leftFrontPidController.getP());
+    SmartDashboard.putNumber("I", leftFrontPidController.getI());
+    SmartDashboard.putNumber("D", leftFrontPidController.getD());    
   }
 }

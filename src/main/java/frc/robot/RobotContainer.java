@@ -15,6 +15,7 @@ import frc.robot.commands.AutoIndex;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.DriveFast;
 import frc.robot.commands.TankDriveRobot;
+import frc.robot.commands.TurtleAuton;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.LaunchGroup;
@@ -56,8 +57,9 @@ public class RobotContainer {
   private final Sensors m_sensors = new Sensors();
   private final Climb m_climb = new Climb();
   private final IntakeSolenoid m_intakeSolenoid = new IntakeSolenoid();
-  private final AutonomousCommand m_autoCommand;
-  
+  //private final AutonomousCommand m_autoCommand;
+  private final TurtleAuton m_autoCommand;
+
   private XboxController controller1 = new XboxController(0);
   private XboxController controller2 = new XboxController(1);
   private XboxController controller3 = new XboxController(2);
@@ -78,8 +80,9 @@ public class RobotContainer {
 
     m_drive.setDefaultCommand(new TankDriveRobot(m_drive, controller1::getLeftY, controller2::getLeftY));
 
-    m_autoCommand = new AutonomousCommand(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
-  
+    //m_autoCommand = new AutonomousCommand(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
+    m_autoCommand = new TurtleAuton(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
+
     m_launch.doInit();
 
     PortForwarder.add(5801, "10.76.60.11", 5801);

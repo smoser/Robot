@@ -60,25 +60,25 @@ public class TurnDegrees extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // could maybe also add a failsafe to stop after 3 seconds under all circumstances
     boolean leftDone = false;
     boolean rightDone = false;
-    left_current_rotations = Math.abs(m_subsystem.getLeftRotations());//one will be neg depending on turn direction
-    right_current_rotations = Math.abs(m_subsystem.getRightRotations());//one will be neg depending on turn direction
+    double abs_target_rotations = Math.abs(target_rotations); // reduces compares below to just the positive case
+    left_current_rotations = Math.abs(m_subsystem.getLeftRotations());// reduces compares below - one will be neg depending on turn direction
+    right_current_rotations = Math.abs(m_subsystem.getRightRotations());// reduces compares below - one will be neg depending on turn direction
     SmartDashboard.putNumber("Current Degrees", rotationsToDegrees(left_current_rotations));// display in degrees
     SmartDashboard.putNumber("Target Degrees", target_degrees);
     
-    //left_current_rotations and right_current_rotations should always be postive
-    if(left_current_rotations > (target_rotations - error_rotations) && left_current_rotations < (target_rotations + error_rotations)){
+    //all values postive
+    if(left_current_rotations > (abs_target_rotations - error_rotations) && left_current_rotations < (abs_target_rotations + error_rotations)){
       leftDone = true;
     }
-    if(right_current_rotations > (target_rotations - error_rotations) && right_current_rotations < (target_rotations + error_rotations)){
+    if(right_current_rotations > (abs_target_rotations - error_rotations) && right_current_rotations < (abs_target_rotations + error_rotations)){
       rightDone = true;
     }
     if(leftDone && rightDone){
       return true;
     }
-    return false;
+    return false; // could maybe also add a failsafe to stop after 3 seconds under all circumstances
   }
 
   // Called once the command ends or is interrupted.

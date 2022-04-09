@@ -133,7 +133,7 @@ public class RobotContainer {
     four2.whileHeld(new ExtendClimb(m_climb));
     four1.whileHeld(new RetractClimb(m_climb, m_sensors));
     one2.whenHeld(new Align(m_drive, m_limelight));
-    a3.whenHeld(new ShootManual(m_launch, m_index, 2300));
+    a3.whenHeld(new ShootManual(m_launch, m_index, 2450));
     five2.whileHeld(new ShootManual(m_launch, m_index, 5000));
     two2.whileHeld(new DriveFast(m_drive, controller1::getLeftY, controller2::getLeftY));
   }

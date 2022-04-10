@@ -11,23 +11,26 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
 public class DriveDistance extends CommandBase {
-  private final Drive m_subsystem;
+  private final Drive drive_subsystem;
   private double target_distance = 0.0; // desired distance to travel in inches
   private double error_inches = 2.0; // default error margin in inches
   private double target_rotations = 0.0; // in sparkmax rotations
-  private double current_rotations = 0.0; // in sparkmax rotations
   private double error_rotations; //in sparkmax rotations
+  private double left_current_rotations = 0.0; // in sparkmax rotations
+  private double right_current_rotations = 0.0; // in sparkmax rotations
+  boolean left_at_target = false;
+  boolean right_at_target = false;
 
   // constructor that takes in a distance in inches and uses default error margin
   public DriveDistance(Drive subsystem, double distance) {
-    m_subsystem = subsystem;
+    drive_subsystem = subsystem;
     addRequirements(subsystem);
     target_distance = distance;
   }
 
   // constructor that takes in a distance in inches and specified error margin in inches
   public DriveDistance(Drive subsystem, double distance, double error) {
-    m_subsystem = subsystem;
+    drive_subsystem = subsystem;
     addRequirements(subsystem);
     target_distance = distance;
     if(error < 1.0){
@@ -40,16 +43,18 @@ public class DriveDistance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_subsystem.resetEncoders();
-    current_rotations = 0.0;
+    drive_subsystem.resetEncoders();
+    left_current_rotations = 0.0;
+    right_current_rotations = 0.0;
+
     // convert target distance in inches into sparkmax rotations
     target_rotations = (inchesToRotations(target_distance));
     // convert error margin in inches into sparkmax rotations
     error_rotations = (inchesToRotations(error_inches));
 
     // should start robot in motion using sparkmax hardware PID/enconders
-    m_subsystem.setLeftRotations(target_rotations);
-    m_subsystem.setRightRotations(target_rotations);
+    drive_subsystem.setLeftRotations(target_rotations);
+    drive_subsystem.setRightRotations(target_rotations);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -60,24 +65,29 @@ public class DriveDistance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    current_rotations =  (m_subsystem.getLeftRotations() + m_subsystem.getRightRotations())/2.0;//takes average, could check individually instead
-    double abs_current_rotations = Math.abs (current_rotations); // putting everything positive reduces number of compares below, error margin is always pos
-    double abs_target_rotations = Math.abs(target_rotations); //putting everything positive reduces number of compares below, error margin is always pos
-    SmartDashboard.putNumber("Current Inches", rotationsToInches(current_rotations));//display in inches
-    SmartDashboard.putNumber("Target Inches", target_distance);
-    if(abs_current_rotations > (abs_target_rotations - error_rotations) && abs_current_rotations < (abs_target_rotations + error_rotations)){
-      return true;
+    if(!left_at_target){
+      left_current_rotations = drive_subsystem.getLeftRotations();
+      if(left_current_rotations > (target_rotations - error_rotations) && left_current_rotations < (target_rotations + error_rotations)){
+        left_at_target = true;
+      }
     }
-    return false;   // could also add a failsafe to stop after 10 seconds under all circumstances
+    if(!right_at_target){
+      right_current_rotations = drive_subsystem.getRightRotations();
+      if(right_current_rotations > (target_rotations - error_rotations) && right_current_rotations < (target_rotations + error_rotations)){
+        right_at_target = true;
+      }
+    }
+    System.out.println("Left Inches Travelled: " + rotationsToInches(left_current_rotations));
+    System.out.println("Right Inches Travelled: " + rotationsToInches(right_current_rotations));
+    
+    return(left_at_target && right_at_target);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.resetEncoders();
-    m_subsystem.setLeftRotations(0);
-    m_subsystem.setRightRotations(0);
-    m_subsystem.setDrive(0,0); //probably unnecessary, but just in case
+    drive_subsystem.resetEncoders();
+    drive_subsystem.resetPIDControllerReference();
   }
   
   //returns equivalent sparkmax rotations

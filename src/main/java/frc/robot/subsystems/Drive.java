@@ -69,6 +69,7 @@ public class Drive extends SubsystemBase {
 
   public void setLeftRotations(double target) {
     leftFrontPidController.setReference(target, CANSparkMax.ControlType.kPosition);
+    leftBackPidController.setReference(target, CANSparkMax.ControlType.kPosition);
   }
 
   public double getRightRotations() {
@@ -77,6 +78,7 @@ public class Drive extends SubsystemBase {
 
   public void setRightRotations(double target) {
     rightFrontPidController.setReference(target, CANSparkMax.ControlType.kPosition);
+    rightBackPidController.setReference(target, CANSparkMax.ControlType.kPosition);
   }
 
   public void resetEncoders(){
@@ -84,6 +86,13 @@ public class Drive extends SubsystemBase {
     leftBackEncoder.setPosition(0);
     rightFrontEncoder.setPosition(0);
     rightBackEncoder.setPosition(0);
+  }
+
+  public void resetPIDControllerReference(){
+    leftFrontPidController.setReference(0, CANSparkMax.ControlType.kDutyCycle);
+    leftBackPidController.setReference(0, CANSparkMax.ControlType.kDutyCycle);
+    rightFrontPidController.setReference(0, CANSparkMax.ControlType.kDutyCycle);
+    rightBackPidController.setReference(0, CANSparkMax.ControlType.kDutyCycle);
   }
 
   public void doInit() {
@@ -97,7 +106,9 @@ public class Drive extends SubsystemBase {
     rightFront.restoreFactoryDefaults();
     rightBack.restoreFactoryDefaults();
 
-    rightGroup.setInverted(true);
+    //rightGroup.setInverted(true); - going to set them individually instead
+    rightFront.setInverted(true); //not sure if right or left should be inverted
+    rightBack.setInverted(true); 
 
     resetEncoders();
 
@@ -107,9 +118,9 @@ public class Drive extends SubsystemBase {
      * CANSparkMax object
      */
     leftFrontPidController = leftFront.getPIDController();
-    //leftBackPidController = leftBack.getPIDController(); //don't need to set PID because of follow
+    leftBackPidController = leftBack.getPIDController(); 
     rightFrontPidController = rightFront.getPIDController();
-    //rightBackPidController = rightBack.getPIDController(); //don't need to set PID because of follow
+    rightBackPidController = rightBack.getPIDController(); 
 
     // set PID coefficients
     double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
@@ -128,15 +139,12 @@ public class Drive extends SubsystemBase {
     leftFrontPidController.setFF(kFF);
     leftFrontPidController.setOutputRange(kMinOutput, kMaxOutput);
 
-    //don't need to set because leftback is set to follow leftfont 
-    /*
     leftBackPidController.setP(kP);
     leftBackPidController.setI(kI);
     leftBackPidController.setD(kD);
     leftBackPidController.setIZone(kIz);
     leftBackPidController.setFF(kFF);
     leftBackPidController.setOutputRange(kMinOutput, kMaxOutput);
-    */
 
     rightFrontPidController.setP(kP);
     rightFrontPidController.setI(kI);
@@ -145,23 +153,20 @@ public class Drive extends SubsystemBase {
     rightFrontPidController.setFF(kFF);
     rightFrontPidController.setOutputRange(kMinOutput, kMaxOutput);
 
-    //don't need to set because rightback is set to follow rightfont 
-    /*
     rightBackPidController.setP(kP);
     rightBackPidController.setI(kI);
     rightBackPidController.setD(kD);
     rightBackPidController.setIZone(kIz);
     rightBackPidController.setFF(kFF);
     rightBackPidController.setOutputRange(kMinOutput, kMaxOutput);
-    */
 
     /**
     * In CAN mode, one SPARK MAX can be configured to follow another. This is done by calling
     * the follow() method on the SPARK MAX you want to configure as a follower, and by passing
     * as a parameter the SPARK MAX you want to configure as a leader.
     */
-    leftBack.follow(leftFront);
-    rightBack.follow(rightFront);
+    //leftBack.follow(leftFront);
+    //rightBack.follow(rightFront);
 
     // display PID coefficients on SmartDashboard
     SmartDashboard.putNumber("P", leftFrontPidController.getP());

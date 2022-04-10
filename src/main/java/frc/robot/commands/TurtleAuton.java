@@ -13,10 +13,10 @@ public class TurtleAuton extends SequentialCommandGroup {
     public TurtleAuton(Launch launch, IntakeSolenoid intakeSolenoid, Index index, Drive drive, Limelight limelight, Intake intake){
         
         addCommands(
-            new DriveDistance(drive, 60.0, 1.0),//drive between 59 and 61 inches
-            new TurnDegrees(drive, 180.0, 0), //turn around
-            new DriveDistance(drive, 60.0, 1.0), //drive back
-            new TurnDegrees(drive, -180.0, 0), //test turning the other direction, should be in start pos
+            new DriveDistance(drive, 60.0),//drive 5 feet
+            new TurnDegrees(drive, 180.0), //turn around
+            new DriveDistance(drive, 60.0), //drive back
+            new TurnDegrees(drive, -180.0), //test turning the other direction, should be in start pos
             new DriveDistance(drive, 36),//drive forward about 3 feet
             new DriveDistance(drive, -36)//reverse, should be at start pos
         );

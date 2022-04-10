@@ -11,24 +11,26 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
 public class TurnDegrees extends CommandBase {
-  private final Drive m_subsystem;
+  private final Drive drive_subsystem;
   private double target_degrees = 0.0; //number of degrees to turn
   private double error_degrees = 1.0; //default error margin in degrees
   private double target_rotations = 0.0; //in sparkmax rotations
+  private double error_rotations; //in sparkmax rotations
   private double left_current_rotations = 0.0; //in sparkmax rotations
   private double right_current_rotations = 0.0; //in sparkmax rotations
-  private double error_rotations; //in sparkmax rotations
+  boolean left_at_target = false;
+  boolean right_at_target = false;
 
   // constructor that takes in degrees to turn, default error is 1 degree
   public TurnDegrees(Drive subsystem, double degrees) {
-    m_subsystem = subsystem;
+    drive_subsystem = subsystem;
     addRequirements(subsystem);
     target_degrees = degrees;
   }
   
   // constructor that takes in degrees to turn and amount of acceptable error
   public TurnDegrees(Drive subsystem, double degrees, double error) {
-    m_subsystem = subsystem;
+    drive_subsystem = subsystem;
     addRequirements(subsystem);
     target_degrees = degrees;
     if(error < 0.5){
@@ -41,15 +43,18 @@ public class TurnDegrees extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_subsystem.resetEncoders();
+    drive_subsystem.resetEncoders();
     left_current_rotations = 0.0;
     right_current_rotations = 0.0;
-    target_rotations = degreesToRotations(target_degrees); 
+
+    //convert target degrees to sparkmax rotations
+    target_rotations = degreesToRotations(target_degrees);
+    //convert error margin in degrees to sparkmax rotations 
     error_rotations = degreesToRotations(error_degrees);
 
     // should start robot in motion using sparkmax hardware PID/enconders
-    m_subsystem.setLeftRotations(target_rotations);//left is pos
-    m_subsystem.setRightRotations(-target_rotations);//right is neg
+    drive_subsystem.setLeftRotations(target_rotations);//left is pos
+    drive_subsystem.setRightRotations(-target_rotations);//right is neg
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -60,34 +65,30 @@ public class TurnDegrees extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    boolean leftDone = false;
-    boolean rightDone = false;
-    double abs_target_rotations = Math.abs(target_rotations); // reduces compares below to just the positive case
-    left_current_rotations = Math.abs(m_subsystem.getLeftRotations());// reduces compares below - one will be neg depending on turn direction
-    right_current_rotations = Math.abs(m_subsystem.getRightRotations());// reduces compares below - one will be neg depending on turn direction
-    SmartDashboard.putNumber("Current Degrees", rotationsToDegrees(left_current_rotations));// display in degrees
-    SmartDashboard.putNumber("Target Degrees", target_degrees);
-    
-    //all values postive
-    if(left_current_rotations > (abs_target_rotations - error_rotations) && left_current_rotations < (abs_target_rotations + error_rotations)){
-      leftDone = true;
+    if(!left_at_target){
+      left_current_rotations = drive_subsystem.getLeftRotations();
+      if(left_current_rotations > (target_rotations - error_rotations) && left_current_rotations < (target_rotations + error_rotations)){
+        left_at_target = true;
+      }
     }
-    if(right_current_rotations > (abs_target_rotations - error_rotations) && right_current_rotations < (abs_target_rotations + error_rotations)){
-      rightDone = true;
+    if(!right_at_target){
+      right_current_rotations = drive_subsystem.getRightRotations();
+      if(right_current_rotations > (target_rotations - error_rotations) && right_current_rotations < (target_rotations + error_rotations)){
+        right_at_target = true;
+      }
     }
-    if(leftDone && rightDone){
-      return true;
-    }
-    return false; // could maybe also add a failsafe to stop after 3 seconds under all circumstances
+    System.out.println("Left Degrees Turned: " + rotationsToDegrees(left_current_rotations));
+    System.out.println("Right Degrees Turned: " + rotationsToDegrees(right_current_rotations));
+
+    return(left_at_target && right_at_target);
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.resetEncoders();
-    m_subsystem.setLeftRotations(0);
-    m_subsystem.setRightRotations(0);
-    m_subsystem.setDrive(0,0); //probably unnecessary, but just in case
+    drive_subsystem.resetEncoders();
+    drive_subsystem.resetPIDControllerReference();
   }
   
   private double degreesToRotations(double degrees){

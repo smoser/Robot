@@ -25,14 +25,14 @@ public class DriveDistance extends CommandBase {
   public DriveDistance(Drive subsystem, double distance) {
     drive_subsystem = subsystem;
     addRequirements(subsystem);
-    target_distance = distance;
+    target_distance = -distance;
   }
 
   // constructor that takes in a distance in inches and specified error margin in inches
   public DriveDistance(Drive subsystem, double distance, double error) {
     drive_subsystem = subsystem;
     addRequirements(subsystem);
-    target_distance = distance;
+    target_distance = -distance;
     if(error < 1.0){
       error_inches = 1.0;
     }else{
@@ -43,6 +43,8 @@ public class DriveDistance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    left_at_target = false;
+    right_at_target = false;
     drive_subsystem.resetEncoders();
     left_current_rotations = 0.0;
     right_current_rotations = 0.0;
@@ -60,6 +62,12 @@ public class DriveDistance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+        // should start robot in motion using sparkmax hardware PID/enconders
+        drive_subsystem.setLeftRotations(target_rotations);
+        drive_subsystem.setRightRotations(target_rotations);
+    System.out.println("Left Inches Travelled: " + rotationsToInches(left_current_rotations));
+    System.out.println("Right Inches Travelled: " + rotationsToInches(right_current_rotations));
+    
   }
 
   // Returns true when the command should end.
@@ -86,6 +94,9 @@ public class DriveDistance extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    System.out.println("Left Inches Travelled: " + rotationsToInches(left_current_rotations));
+    System.out.println("Right Inches Travelled: " + rotationsToInches(right_current_rotations));
+
     drive_subsystem.resetEncoders();
     drive_subsystem.resetPIDControllerReference();
   }

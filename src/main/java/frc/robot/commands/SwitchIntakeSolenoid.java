@@ -56,7 +56,7 @@ public class SwitchIntakeSolenoid extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(timer > 50){
+    if(timer > 10){
       return true;
     }
     else{

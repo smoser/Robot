@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class TurnDegrees extends CommandBase {
   private final Drive drive_subsystem;
   private double target_degrees = 0.0; //number of degrees to turn
-  private double error_degrees = 1.0; //default error margin in degrees
+  private double error_degrees = 3.5; //default error margin in degrees
   private double target_rotations = 0.0; //in sparkmax rotations
   private double error_rotations; //in sparkmax rotations
   private double left_current_rotations = 0.0; //in sparkmax rotations
@@ -25,7 +25,7 @@ public class TurnDegrees extends CommandBase {
   public TurnDegrees(Drive subsystem, double degrees) {
     drive_subsystem = subsystem;
     addRequirements(subsystem);
-    target_degrees = degrees;
+    target_degrees = -degrees;
   }
   
   // constructor that takes in degrees to turn and amount of acceptable error
@@ -43,6 +43,8 @@ public class TurnDegrees extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    left_at_target = false;
+    right_at_target = false;
     drive_subsystem.resetEncoders();
     left_current_rotations = 0.0;
     right_current_rotations = 0.0;
@@ -60,6 +62,9 @@ public class TurnDegrees extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+        // should start robot in motion using sparkmax hardware PID/enconders
+        drive_subsystem.setLeftRotations(target_rotations);//left is pos
+        drive_subsystem.setRightRotations(-target_rotations);//right is neg
   }
 
   // Returns true when the command should end.
@@ -73,13 +78,14 @@ public class TurnDegrees extends CommandBase {
     }
     if(!right_at_target){
       right_current_rotations = drive_subsystem.getRightRotations();
-      if(right_current_rotations > (target_rotations - error_rotations) && right_current_rotations < (target_rotations + error_rotations)){
+      if(right_current_rotations > (-target_rotations - error_rotations) && right_current_rotations < (-target_rotations + error_rotations)){
         right_at_target = true;
       }
     }
     System.out.println("Left Degrees Turned: " + rotationsToDegrees(left_current_rotations));
     System.out.println("Right Degrees Turned: " + rotationsToDegrees(right_current_rotations));
-
+    System.out.println("left_at_target: " + left_at_target);
+    System.out.println("right_at_target: " + right_at_target);
     return(left_at_target && right_at_target);
 
   }

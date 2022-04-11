@@ -94,6 +94,7 @@ public class Drive extends SubsystemBase {
     rightFrontPidController.setReference(0, CANSparkMax.ControlType.kDutyCycle);
     rightBackPidController.setReference(0, CANSparkMax.ControlType.kDutyCycle);
   }
+  
 
   public void doInit() {
     /**
@@ -107,8 +108,8 @@ public class Drive extends SubsystemBase {
     rightBack.restoreFactoryDefaults();
 
     //rightGroup.setInverted(true); - going to set them individually instead
-    rightFront.setInverted(true); //not sure if right or left should be inverted
-    rightBack.setInverted(true); 
+    leftFront.setInverted(true); //not sure if right or left should be inverted
+    leftBack.setInverted(true); 
 
     resetEncoders();
 
@@ -125,12 +126,12 @@ public class Drive extends SubsystemBase {
     // set PID coefficients
     double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
     kP = 0.1;
-    kI = 1e-4;
-    kD = 1;
-    kIz = 0;
+    kI = .0005;
+    kD = 0;
+    kIz = 0.5;
     kFF = 0;
-    kMaxOutput = 0.25;//will increase after testing
-    kMinOutput = -0.25;//will increase after testing
+    kMaxOutput = 0.35;//will increase after testing
+    kMinOutput = -0.35;//will increase after testing
 
     leftFrontPidController.setP(kP);
     leftFrontPidController.setI(kI);

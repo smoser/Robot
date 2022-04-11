@@ -20,7 +20,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
             //new Align(drive, limelight),
             //new SwitchAngle(launch),
             new SwitchAngle(launch),
-            new ShootManual(launch, index, 2070),
+            new ShootManual(launch, index, 2070, 6),
             new StopIntake(intake)
         );
     }

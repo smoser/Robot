@@ -17,6 +17,7 @@ public class ShootManual extends CommandBase {
   private final Index m_index;
   private double launchSpeed;
   private boolean feedRunning;
+  private double m_wait;
 
   private final Timer m_timer = new Timer();
 
@@ -25,10 +26,11 @@ public class ShootManual extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ShootManual(Launch launch, Index index, double speed) {
+  public ShootManual(Launch launch, Index index, double speed, double wait) {
     m_launch = launch;
     m_index = index;
     launchSpeed = speed;
+    m_wait = wait;
 
     addRequirements(launch, index);
   }
@@ -80,7 +82,7 @@ public class ShootManual extends CommandBase {
   @Override
   public boolean isFinished() {
     // feed has been running for 6 seconds.
-    if(m_timer.get() > 6) {
+    if(m_timer.get() > m_wait) {
       return true;
     }
     return false;

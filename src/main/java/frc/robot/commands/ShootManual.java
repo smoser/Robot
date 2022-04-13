@@ -17,7 +17,7 @@ public class ShootManual extends CommandBase {
   private final Index m_index;
   private double launchSpeed;
   private boolean feedRunning;
-  private double m_wait;
+  private double m_wait = 6;
 
   private final Timer m_timer = new Timer();
 
@@ -26,13 +26,16 @@ public class ShootManual extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ShootManual(Launch launch, Index index, double speed, double wait) {
+  public ShootManual(Launch launch, Index index, double speed) {
+    addRequirements(launch, index);
     m_launch = launch;
     m_index = index;
     launchSpeed = speed;
-    m_wait = wait;
+  }
 
-    addRequirements(launch, index);
+  public ShootManual(Launch launch, Index index, double speed, double wait) {
+    this(launch, index, speed);
+    m_wait = wait;
   }
 
 

@@ -12,9 +12,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Align;
 import frc.robot.commands.AutoIndex;
-import frc.robot.commands.AutonomousCommand;
+import frc.robot.commands.OriginalAuton;
 import frc.robot.commands.DriveFast;
 import frc.robot.commands.TankDriveRobot;
+import frc.robot.commands.TurnTwoBallAuton;
+import frc.robot.commands.FourBallAuton;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.LaunchGroup;
@@ -37,6 +39,7 @@ import frc.robot.subsystems.Sensors;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Index;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -56,8 +59,9 @@ public class RobotContainer {
   private final Sensors m_sensors = new Sensors();
   private final Climb m_climb = new Climb();
   private final IntakeSolenoid m_intakeSolenoid = new IntakeSolenoid();
-  private final AutonomousCommand m_autoCommand;
-  
+
+  private final CommandBase m_autoCommand;
+
   private XboxController controller1 = new XboxController(0);
   private XboxController controller2 = new XboxController(1);
   private XboxController controller3 = new XboxController(2);
@@ -78,8 +82,10 @@ public class RobotContainer {
 
     m_drive.setDefaultCommand(new TankDriveRobot(m_drive, controller1::getLeftY, controller2::getLeftY));
 
-    m_autoCommand = new AutonomousCommand(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
-  
+    // m_autoCommand = new OriginalAuton(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
+    // m_autoCommand = new FourBallAuton(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
+    m_autoCommand = new TurnTwoBallAuton(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
+
     m_launch.doInit();
 
     PortForwarder.add(5801, "10.76.60.11", 5801);
@@ -88,8 +94,6 @@ public class RobotContainer {
     PortForwarder.add(5803, "10.76.60.11", 5803);
     PortForwarder.add(5804, "10.76.60.11", 5804);
     PortForwarder.add(5805, "10.76.60.11", 5805);
-
-    
 
     CameraServer.startAutomaticCapture();
 
@@ -138,7 +142,6 @@ public class RobotContainer {
     two2.whileHeld(new DriveFast(m_drive, controller1::getLeftY, controller2::getLeftY));
   }
 
- 
   public static RobotContainer getInstance(){
     return robotContainer;
   }

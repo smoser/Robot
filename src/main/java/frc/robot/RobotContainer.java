@@ -12,11 +12,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Align;
 import frc.robot.commands.AutoIndex;
-import frc.robot.commands.OriginalAuton;
+import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.DriveFast;
 import frc.robot.commands.TankDriveRobot;
-import frc.robot.commands.TurnTwoBallAuton;
-import frc.robot.commands.FourBallAuton;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.LaunchGroup;
@@ -58,9 +56,8 @@ public class RobotContainer {
   private final Sensors m_sensors = new Sensors();
   private final Climb m_climb = new Climb();
   private final IntakeSolenoid m_intakeSolenoid = new IntakeSolenoid();
-  //private final AutonomousCommand m_autoCommand;
-  private final TurnTwoBallAuton m_autoCommand;
-
+  private final AutonomousCommand m_autoCommand;
+  
   private XboxController controller1 = new XboxController(0);
   private XboxController controller2 = new XboxController(1);
   private XboxController controller3 = new XboxController(2);
@@ -81,9 +78,8 @@ public class RobotContainer {
 
     m_drive.setDefaultCommand(new TankDriveRobot(m_drive, controller1::getLeftY, controller2::getLeftY));
 
-    //m_autoCommand = new AutonomousCommand(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
-    m_autoCommand = new TurnTwoBallAuton(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
-
+    m_autoCommand = new AutonomousCommand(m_launch, m_intakeSolenoid, m_index, m_drive, m_limelight, m_intake);
+  
     m_launch.doInit();
 
     PortForwarder.add(5801, "10.76.60.11", 5801);
@@ -128,17 +124,17 @@ public class RobotContainer {
     JoystickButton two2 = new JoystickButton(controller2, 2);
 
     a.whileHeld(new RunIntake(m_intake));
-    lb3.whileHeld(new ShootManual(m_launch, m_index, 2000, 10));
+    lb3.whileHeld(new ShootManual(m_launch, m_index, 2000));
     x3.whenPressed(new SwitchIntakeSolenoid(m_intakeSolenoid));
     b3.whenPressed(new SwitchAngle(m_launch));
     y3.whileHeld(new ReverseIntake(m_intake));
     // shoot independent of limelight.
-    rb3.whileHeld(new ShootManual(m_launch, m_index, 1900, 10));
+    rb3.whileHeld(new ShootManual(m_launch, m_index, 1900));
     four2.whileHeld(new ExtendClimb(m_climb));
     four1.whileHeld(new RetractClimb(m_climb, m_sensors));
     one2.whenHeld(new Align(m_drive, m_limelight));
-    a3.whenHeld(new ShootManual(m_launch, m_index, 2300, 10));
-    five2.whileHeld(new ShootManual(m_launch, m_index, 5000, 10));
+    a3.whenHeld(new ShootManual(m_launch, m_index, 2450));
+    five2.whileHeld(new ShootManual(m_launch, m_index, 5000));
     two2.whileHeld(new DriveFast(m_drive, controller1::getLeftY, controller2::getLeftY));
   }
 

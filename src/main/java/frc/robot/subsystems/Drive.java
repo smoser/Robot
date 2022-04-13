@@ -38,7 +38,7 @@ public class Drive extends SubsystemBase {
     private DifferentialDrive driveDifferential = new DifferentialDrive(leftGroup, rightGroup);
 
   public void arcadeDrive(DoubleSupplier speed, DoubleSupplier rotation) {
-      driveDifferential.arcadeDrive(speed.getAsDouble() * 0.6f, rotation.getAsDouble() * 0.6f);
+      driveDifferential.arcadeDrive(speed.getAsDouble() * 0.7f, rotation.getAsDouble() * -0.7f);
   }
 
   public void tankDrive(DoubleSupplier leftSpeed, DoubleSupplier rightSpeed){

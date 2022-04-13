@@ -51,11 +51,6 @@ public class RetractClimb extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_sensor.getClimbSensor()){
-      return true;
-    }
-    else{
-      return false;
-    }
+      return m_sensor.isClimbSensorHit();
   }
 }

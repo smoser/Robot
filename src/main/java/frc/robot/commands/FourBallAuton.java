@@ -8,9 +8,9 @@ import frc.robot.subsystems.IntakeSolenoid;
 import frc.robot.subsystems.Launch;
 import frc.robot.subsystems.Limelight;
 
-public class TurtleAuton extends SequentialCommandGroup {
+public class FourBallAuton extends SequentialCommandGroup {
     
-    public TurtleAuton(Launch launch, IntakeSolenoid intakeSolenoid, Index index, Drive drive, Limelight limelight, Intake intake){
+    public FourBallAuton(Launch launch, IntakeSolenoid intakeSolenoid, Index index, Drive drive, Limelight limelight, Intake intake){
         
         addCommands(
             new SwitchIntakeSolenoid(intakeSolenoid),
@@ -22,7 +22,7 @@ public class TurtleAuton extends SequentialCommandGroup {
             new TurnDegrees(drive, 19.5),
             new DriveDistance(drive, 156),
             new TurnDegrees(drive, -7.5),
-            new ShootManual(launch, index, 2950, 3)
+            new ShootManual(launch, index, 3000, 3)
             // new TurnDegrees(drive, -180.0), //test turning the other direction, should be in start pos
             // new DriveDistance(drive, 36)//drive forward about 3 feet
             //new DriveDistance(drive, 36)//reverse, should be at start pos

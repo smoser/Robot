@@ -8,9 +8,9 @@ import frc.robot.subsystems.IntakeSolenoid;
 import frc.robot.subsystems.Launch;
 import frc.robot.subsystems.Limelight;
 
-public class AutonomousCommand extends SequentialCommandGroup {
+public class OriginalAuton extends SequentialCommandGroup {
     
-    public AutonomousCommand(Launch launch, IntakeSolenoid intakeSolenoid, Index index, Drive drive, Limelight limelight, Intake intake){
+    public OriginalAuton(Launch launch, IntakeSolenoid intakeSolenoid, Index index, Drive drive, Limelight limelight, Intake intake){
         
         addCommands(
             //new SwitchIntakeSolenoid(intakeSolenoid),

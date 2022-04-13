@@ -130,8 +130,8 @@ public class Drive extends SubsystemBase {
     kD = 0;
     kIz = 0.5;
     kFF = 0;
-    kMaxOutput = 0.35;//will increase after testing
-    kMinOutput = -0.35;//will increase after testing
+    kMaxOutput = 0.38;//will increase after testing
+    kMinOutput = -0.38;//will increase after testing
 
     leftFrontPidController.setP(kP);
     leftFrontPidController.setI(kI);

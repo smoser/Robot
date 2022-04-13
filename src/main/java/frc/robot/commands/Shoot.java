@@ -18,6 +18,7 @@ public class Shoot extends CommandBase {
   private Limelight m_limelight;
   private double launchSpeed;
   private boolean feedRunning = false;
+  private double howLong = 3.0f;
 
   private final Timer m_timer = new Timer();
 
@@ -104,7 +105,7 @@ public class Shoot extends CommandBase {
   @Override
   public boolean isFinished() {
     // feed has been running for 6 seconds.
-    if(m_timer.get() > 6) {
+    if(m_timer.get() > howLong) {
       return true;
     }
     return false;

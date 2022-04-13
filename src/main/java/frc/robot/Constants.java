@@ -60,4 +60,12 @@ public final class Constants {
     // Wheel size for drive in Feet (6 inches).
     public final static double wheelDiameterFeet = .5f;
 
+	// Wheel circumference inches = 6in diameter * pi (could also use Math.Pi)
+	public final static double wheelCircumferenceInches = 18.8495559215;
+
+	// drive motor gear ratio (1 to 10.71)
+	public final static double driveGearRatio = 10.71;
+
+	// number of sparkmax rotations per 360 degrees
+	public final static double rotationsPer360 = 50.0;
 }

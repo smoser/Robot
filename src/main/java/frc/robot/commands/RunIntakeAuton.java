@@ -50,7 +50,7 @@ public class RunIntakeAuton extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(i > 25){
+    if(i > 10){
       return true;
     }
     return false;

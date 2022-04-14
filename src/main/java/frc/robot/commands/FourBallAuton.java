@@ -22,7 +22,8 @@ public class FourBallAuton extends SequentialCommandGroup {
             new TurnDegrees(drive, 19.5),
             new DriveDistance(drive, 156),
             new TurnDegrees(drive, -7.5),
-            new ShootManual(launch, index, 3000, 3)
+            new ShootManual(launch, index, 3000, 3),
+            new StopIntake(intake)
             // new TurnDegrees(drive, -180.0), //test turning the other direction, should be in start pos
             // new DriveDistance(drive, 36)//drive forward about 3 feet
             //new DriveDistance(drive, 36)//reverse, should be at start pos

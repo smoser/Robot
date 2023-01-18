@@ -17,12 +17,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drive extends SubsystemBase {
   
-  public Drive() {}
+  public Drive() {
+    leftGroup.setInverted(true);
+  }
 
-  private CANSparkMax leftFront = new CANSparkMax(0, MotorType.kBrushless);
-  private CANSparkMax leftBack = new CANSparkMax(1, MotorType.kBrushless);
-  private CANSparkMax rightFront = new CANSparkMax(2, MotorType.kBrushless);
-  private CANSparkMax rightBack = new CANSparkMax(3, MotorType.kBrushless);
+  private CANSparkMax leftFront = new CANSparkMax(1, MotorType.kBrushless);
+  private CANSparkMax leftBack = new CANSparkMax(2, MotorType.kBrushless);
+  private CANSparkMax rightFront = new CANSparkMax(3, MotorType.kBrushless);
+  private CANSparkMax rightBack = new CANSparkMax(4, MotorType.kBrushless);
 
   private MotorControllerGroup leftGroup = new MotorControllerGroup(leftBack, leftFront);
   private MotorControllerGroup rightGroup = new MotorControllerGroup(rightFront, rightBack);

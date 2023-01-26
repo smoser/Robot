@@ -4,19 +4,15 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.DoubleSupplier;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.util.function.DoubleSupplier;
 
 public class Drive extends SubsystemBase {
-  
+
   public Drive() {
     leftGroup.setInverted(true);
   }
@@ -31,10 +27,9 @@ public class Drive extends SubsystemBase {
 
   private DifferentialDrive driveTrain = new DifferentialDrive(leftGroup, rightGroup);
 
-  public void setTankDrive(DoubleSupplier lSpeed, DoubleSupplier rSpeed, Double pOutput){
+  public void setTankDrive(DoubleSupplier lSpeed, DoubleSupplier rSpeed, Double pOutput) {
 
     driveTrain.tankDrive(lSpeed.getAsDouble() * pOutput, rSpeed.getAsDouble() * pOutput);
-
   }
 
   @Override

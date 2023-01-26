@@ -4,17 +4,15 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.ExampleSubsystem;
-
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Drive;
+import java.util.function.DoubleSupplier;
 
 /** An example command that uses an example subsystem. */
 public class DriveTank extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Drive m_subsystem;
+
   private final DoubleSupplier m_lSpeed;
   private final DoubleSupplier m_rSpeed;
   private final double m_pOutput;
@@ -42,7 +40,6 @@ public class DriveTank extends CommandBase {
   public void execute() {
 
     m_subsystem.setTankDrive(m_lSpeed, m_rSpeed, m_pOutput);
-
   }
 
   // Called once the command ends or is interrupted.

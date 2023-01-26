@@ -4,19 +4,14 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.DriveTank;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.ExampleSubsystem;
-
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.Autos;
+import frc.robot.commands.DriveTank;
+import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.ExampleSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  //Dont remove example until autons are programmed
+  // Dont remove example until autons are programmed
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final Drive m_drive = new Drive();
 
@@ -35,7 +30,6 @@ public class RobotContainer {
   private final Joystick xboxController = new Joystick(2);
 
   private Double speed = 1.0;
-
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -54,9 +48,7 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {
-
-  }
+  private void configureBindings() {}
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
